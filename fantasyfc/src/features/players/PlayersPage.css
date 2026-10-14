@@ -263,19 +263,3 @@
   background: rgba(255, 255, 255, 0.05);
   cursor: not-allowed;
 }
-
-/* Status and error lines (unstyled in the original app). */
-.players-page__status,
-.players-page__error {
-  margin: 24px 0;
-  font-size: 13px;
-  color: rgba(255, 255, 255, 0.6);
-}
-
-.players-page__error {
-  padding: 11px 14px;
-  border-radius: 8px;
-  background: rgba(248, 113, 113, 0.1);
-  border: 1px solid rgba(248, 113, 113, 0.3);
-  color: #f87171;
-}

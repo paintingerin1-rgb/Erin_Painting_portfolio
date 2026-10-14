@@ -1,12 +1,11 @@
-// Standings data source - portfolio version.
-//
-// In production, getLeagueStandings() calls the league_standings database
-// function, which sums fpl_points() over each team's starting XI for every
-// gameweek after the player was drafted. Points are never stored; they're
-// derived from raw match stats on read. This version returns a demo league
-// with the same StandingRow shape, so StandingsPage is unchanged.
+// Standings data source: the league_standings / my_league_standings RPCs
+// (20260926150000). Points are derived in the database from
+// player_gameweek_points: each team's starting XI, captain doubled - see
+// 20261012090000_score_starting_xi.sql for exactly which players and
+// gameweeks count towards a team's total.
 
-import { DEMO_LEAGUE, STANDINGS, later } from "../../data/sampleData";
+import { supabase } from "../../lib/supabaseClient";
+import { unwrapMany, describeError } from "../../lib/dataAccess";
 
 export interface StandingRow {
   userId: string;
@@ -25,33 +24,95 @@ export interface CurrentGameweek {
   deadlineAt: string;
 }
 
-/** Full table for one league, already sorted by rank. */
-export async function getLeagueStandings(leagueId: number): Promise<StandingRow[]> {
-  if (leagueId !== DEMO_LEAGUE.id) throw new Error("League not found, or you're not a member of it.");
-  const rows = [...STANDINGS]
-    .sort((a, b) => b.totalPoints - a.totalPoints)
-    .map((r, i) => ({ ...r, avatarUrl: null, rank: i + 1 }));
-  return later(rows);
+interface StandingRpcRow {
+  user_id: string;
+  username: string;
+  avatar_url: string | null;
+  team_name: string | null;
+  is_draft_complete: boolean;
+  gameweek_points: number;
+  total_points: number;
+  rank: number;
+  previous_rank: number | null;
 }
 
-/** A league's name. */
+
+/** Full table for one league, already sorted by rank. */
+export async function getLeagueStandings(
+  leagueId: number,
+): Promise<StandingRow[]> {
+  const rows = unwrapMany<StandingRpcRow>(
+    await supabase.rpc("league_standings", { p_league_id: leagueId }),
+    "the league standings",
+  );
+  return rows.map((r) => ({
+    userId: r.user_id,
+    username: r.username,
+    avatarUrl: r.avatar_url,
+    teamName: r.team_name,
+    isDraftComplete: r.is_draft_complete,
+    gameweekPoints: r.gameweek_points,
+    totalPoints: r.total_points,
+    rank: r.rank,
+    previousRank: r.previous_rank,
+  }));
+}
+
+/** A league's name; RLS lets members read their own leagues. */
 export async function getLeagueName(leagueId: number): Promise<string> {
-  if (leagueId !== DEMO_LEAGUE.id) throw new Error("League not found, or you're not a member of it.");
-  return later(DEMO_LEAGUE.name, 120);
+  const { data, error } = await supabase
+    .from("league")
+    .select("name")
+    .eq("id", leagueId)
+    .maybeSingle();
+  if (error) throw new Error(describeError(error, "the league"));
+  if (!data) throw new Error("League not found, or you're not a member of it.");
+  return data.name;
+}
+
+/**
+ * Each competition has its own gameweeks (#44), so both lookups below take
+ * the current league's competition. Without one they use the Premier League.
+ */
+function gameweeksOf(competitionId: number | null, columns: string) {
+  const query = supabase.from("gameweek").select(`${columns}, competition!inner ( code )`);
+  return competitionId === null
+    ? query.eq("competition.code", "PL")
+    : query.eq("competition_id", competitionId);
 }
 
 export async function getCurrentGameweek(
-  _competitionId: number | null = null,
+  competitionId: number | null = null,
 ): Promise<CurrentGameweek | null> {
-  void _competitionId;
-  return later({ number: 6, deadlineAt: new Date(Date.now() - 2 * 3600_000).toISOString() }, 120);
+  const { data, error } = await gameweeksOf(competitionId, "number, deadline_at")
+    .eq("is_current", true)
+    .maybeSingle<{ number: number; deadline_at: string }>();
+  if (error) throw new Error(describeError(error, "the current gameweek"));
+  if (!data) return null;
+  return {
+    number: data.number,
+    deadlineAt: data.deadline_at,
+  };
 }
 
 export async function getUpcomingGameweek(
-  _competitionId: number | null = null,
+  competitionId: number | null = null,
 ): Promise<CurrentGameweek | null> {
-  void _competitionId;
-  return later({ number: 7, deadlineAt: new Date(Date.now() + 160 * 3600_000).toISOString() }, 120);
+  const { data: gw, error: gwError } = await gameweeksOf(competitionId, "id, number, deadline_at")
+    .gt("deadline_at", new Date().toISOString())
+    .order("deadline_at", { ascending: true })
+    .limit(1)
+    .maybeSingle<{ id: number; number: number; deadline_at: string }>();
+
+  if (gwError) throw new Error(describeError(gwError, "the upcoming gameweek"));
+  if (!gw) return null;
+
+
+
+  return {
+    number: gw.number,
+    deadlineAt: gw.deadline_at,
+  };
 }
 
 /**

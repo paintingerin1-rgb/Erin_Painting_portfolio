@@ -1,0 +1,693 @@
+/*
+  League discovery. Styled to match the rest of the site: no ground of its own
+  (the shared stadium backdrop shows through), glass panels, Oswald uppercase
+  titles, Inter for everything else, violet for whatever is live or active.
+*/
+.globe-discovery {
+  position: relative;
+  /* Fills the app shell's main column beside the sidebar. */
+  height: 100vh;
+  overflow: hidden;
+}
+
+/*
+  Edge vignette, fading into the site's dark tint and leaning toward the
+  selected league's colour, so the globe sits in the page rather than on it.
+*/
+.globe-discovery::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background: radial-gradient(
+    ellipse at 50% 45%,
+    transparent 45%,
+    color-mix(in srgb, var(--vig, var(--globe-vignette)) 10%, var(--globe-vignette)) 92%
+  );
+  opacity: 0.55;
+}
+
+/*
+  Stack, bottom to top: ambient wash (0) · globe canvas · vignette (1) ·
+  labels and chrome (2). The vignette sits over the globe but under anything
+  readable.
+*/
+.globe-discovery-head,
+.globe-discovery-hint,
+.globe-quick-jump,
+.globe-panel {
+  z-index: 2;
+}
+
+.globe-canvas {
+  position: absolute;
+  inset: 0;
+  cursor: grab;
+  touch-action: none;
+}
+
+.globe-canvas:active {
+  cursor: grabbing;
+}
+
+/* ---- Headline ---- */
+
+.globe-discovery-head {
+  position: absolute;
+  top: clamp(28px, 5vh, 48px);
+  left: clamp(24px, 4vw, 48px);
+  max-width: 32ch;
+  pointer-events: none;
+  transition: opacity 0.5s ease, transform 0.5s ease;
+}
+
+.globe-kicker {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--violet-soft);
+}
+
+.globe-discovery-title {
+  margin-top: 8px;
+  font-family: "Oswald", sans-serif;
+  font-size: clamp(32px, 3.4vw, 44px);
+  font-weight: 700;
+  line-height: 1.05;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  color: var(--text);
+}
+
+.globe-discovery-lede {
+  margin-top: 10px;
+  max-width: 30ch;
+  font-size: 14px;
+  color: var(--text-2);
+}
+
+[data-dim] {
+  opacity: 0;
+  transform: translateY(-8px);
+  pointer-events: none;
+}
+
+/* ---- Hint ---- */
+
+.globe-discovery-hint {
+  position: absolute;
+  bottom: clamp(22px, 4vh, 36px);
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 8px 16px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: var(--glass);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  font-size: 10.5px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-3);
+  pointer-events: none;
+  transition: opacity 0.4s ease;
+}
+
+.globe-discovery-hint[data-dim] {
+  transform: translateX(-50%) translateY(8px);
+}
+
+.globe-dot-sep {
+  width: 3px;
+  height: 3px;
+  border-radius: 50%;
+  background: var(--text-3);
+}
+
+/* ---- Quick jump chips ---- */
+
+.globe-quick-jump {
+  position: absolute;
+  right: clamp(20px, 3vw, 36px);
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  transition: opacity 0.4s ease, transform 0.4s ease;
+}
+
+.globe-chip {
+  width: 48px;
+  height: 38px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--glass);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  color: var(--text-2);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  cursor: pointer;
+  transition: color 0.15s ease, border-color 0.15s ease, background 0.15s ease, transform 0.15s ease;
+}
+
+.globe-chip::before {
+  content: '';
+  display: block;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--accent);
+  margin: 0 auto 3px;
+}
+
+.globe-chip:hover {
+  color: var(--text);
+  background: var(--fill-hover);
+  border-color: var(--violet-border);
+  transform: translateX(-3px);
+}
+
+/* Coming-soon leagues stay selectable, just quieter than the live one. */
+.globe-chip[data-soon] {
+  opacity: 0.6;
+}
+
+.globe-chip[data-soon]:hover {
+  opacity: 1;
+}
+
+.globe-quick-jump[data-dim] {
+  transform: translateY(-50%) translateX(12px);
+}
+
+/* ---- Badges, shared by labels, panel and fallback list ---- */
+
+.globe-badge {
+  display: inline-flex;
+  align-self: flex-start;
+  padding: 3px 10px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.08);
+  font-size: 10.5px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--text-3);
+  white-space: nowrap;
+}
+
+/* Same treatment as the active sidebar link and Match Center's live score. */
+.globe-badge--live {
+  background: var(--violet-tint);
+  color: #d6c9f0;
+}
+
+/* ---- Labels over the globe ---- */
+
+/*
+  Labels sit over the canvas, above the vignette but under the panel and
+  chrome (same z-index, earlier in the DOM). Markers.tsx moves each one.
+*/
+.globe-marker-layer {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+/* Zero-size anchor, translated onto the 3D point each frame; children hang off it. */
+.globe-marker {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 0;
+  height: 0;
+  transition: opacity 0.25s ease;
+  will-change: opacity, transform;
+}
+
+.globe-marker-leader {
+  position: absolute;
+  left: 0;
+  top: 0;
+  height: 1px;
+  transform-origin: 0 50%;
+  background: linear-gradient(90deg, var(--accent), color-mix(in srgb, var(--accent) 20%, transparent));
+  opacity: 0.8;
+  pointer-events: none;
+}
+
+.globe-marker-pin {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 7px;
+  height: 7px;
+  margin: -3.5px 0 0 -3.5px;
+  border-radius: 50%;
+  background: var(--accent);
+  box-shadow: 0 0 0 2px rgba(20, 19, 24, 0.7);
+  pointer-events: none;
+}
+
+.globe-marker-button {
+  position: absolute;
+  left: 0;
+  top: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  padding: 9px 12px 10px;
+  border: 1px solid var(--line);
+  border-left: 3px solid var(--accent);
+  border-radius: 8px;
+  background: var(--glass-strong);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
+  cursor: pointer;
+  text-align: left;
+  white-space: nowrap;
+  transition: background 0.15s ease, border-color 0.15s ease;
+}
+
+/* No transform on hover: the inline transform carries the label's fan offset. */
+.globe-marker-button:hover {
+  background: rgba(44, 41, 52, 0.92);
+  border-color: var(--violet-border);
+  border-left-color: var(--accent);
+}
+
+.globe-marker-league {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text);
+}
+
+.globe-marker-button .globe-badge {
+  padding: 2px 8px;
+  font-size: 9.5px;
+}
+
+.globe-marker[data-selected] .globe-marker-button {
+  border-color: var(--violet-border);
+  border-left-color: var(--accent);
+}
+
+/* ---- Side panel ---- */
+
+.globe-panel {
+  position: absolute;
+  top: 0;
+  right: 0;
+  height: 100%;
+  width: min(400px, 92vw);
+  padding: clamp(22px, 4vh, 40px) clamp(20px, 2.5vw, 30px);
+  border-left: 1px solid rgba(255, 255, 255, 0.09);
+  background: var(--glass);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  transform: translateX(100%);
+  opacity: 0;
+  transition: transform 0.42s cubic-bezier(0.22, 0.8, 0.28, 1), opacity 0.3s ease;
+  display: flex;
+  align-items: center;
+}
+
+.globe-panel[data-open] {
+  transform: translateX(0);
+  opacity: 1;
+}
+
+.globe-panel-inner {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  animation: globe-panel-rise 0.45s cubic-bezier(0.22, 0.8, 0.28, 1) both;
+}
+
+@keyframes globe-panel-rise {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+}
+
+.globe-panel-close {
+  align-self: flex-start;
+  border: none;
+  background: none;
+  padding: 0;
+  margin-bottom: 26px;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-3);
+  cursor: pointer;
+  transition: color 0.15s ease;
+}
+
+.globe-panel-close::before {
+  content: '← ';
+}
+
+.globe-panel-close:hover {
+  color: var(--text);
+}
+
+.globe-panel-head {
+  display: flex;
+  gap: 14px;
+  align-items: center;
+  margin-bottom: 18px;
+}
+
+/* The league marks are drawn for light grounds, so the tile stays white. */
+.globe-panel-crest {
+  width: 52px;
+  height: 52px;
+  flex: none;
+  border-radius: 10px;
+  display: grid;
+  place-items: center;
+  padding: 7px;
+  background: #fff;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.3);
+}
+
+/*
+  Sized explicitly rather than with max-width/max-height: as a grid item the
+  image keeps an automatic minimum size, which beats a percentage max and let
+  the portrait marks (Ligue 1 is 1:1.8) spill out of the tile.
+*/
+.globe-panel-crest img {
+  width: 100%;
+  height: 100%;
+  min-width: 0;
+  min-height: 0;
+  object-fit: contain;
+}
+
+.globe-panel-title {
+  margin-top: 2px;
+  font-family: "Oswald", sans-serif;
+  font-size: 26px;
+  font-weight: 700;
+  line-height: 1.1;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  color: var(--text);
+}
+
+.globe-panel-lede {
+  margin-top: 12px;
+  font-size: 13.5px;
+  line-height: 1.6;
+  color: var(--text-2);
+}
+
+.globe-panel-actions {
+  margin-top: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+/* Same look as the Leagues page's Create / Join buttons, with a second line. */
+.globe-action {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  padding: 14px 16px;
+  border: 1px solid var(--line-strong);
+  border-radius: 10px;
+  background: var(--fill);
+  text-align: left;
+  cursor: pointer;
+  transition: background 0.15s ease, transform 0.1s ease;
+}
+
+.globe-action:hover {
+  background: var(--fill-hover);
+}
+
+.globe-action:active {
+  transform: scale(0.98);
+}
+
+.globe-action-primary {
+  border-color: transparent;
+  background: var(--button);
+}
+
+.globe-action-primary:hover {
+  background: var(--button-hover);
+}
+
+.globe-action-title {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text);
+}
+
+.globe-action-sub {
+  font-size: 12.5px;
+  color: var(--text-2);
+}
+
+.globe-action-primary .globe-action-sub {
+  color: rgba(255, 255, 255, 0.78);
+}
+
+/* Create / join-code are links now, styled as the buttons above. */
+a.globe-action {
+  text-decoration: none;
+}
+
+/* ---- Public leagues of the selected competition (#31) ---- */
+
+.globe-list-heading {
+  margin-top: 22px;
+  margin-bottom: 8px;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-3);
+}
+
+/* Scrolls on its own so a long list never pushes Create off the panel. */
+.globe-league-list {
+  list-style: none;
+  margin: 0;
+  padding: 0 4px 0 0;
+  max-height: min(34vh, 300px);
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.globe-league-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 9px 10px 9px 14px;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  background: var(--fill);
+}
+
+.globe-league-name {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 13.5px;
+  color: var(--text);
+}
+
+.globe-league-btn {
+  flex: none;
+  padding: 6px 14px;
+  border: 1px solid var(--line-strong);
+  border-radius: 999px;
+  background: transparent;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text);
+  cursor: pointer;
+  transition: background 0.15s ease;
+}
+
+.globe-league-btn:hover:not(:disabled) {
+  background: var(--fill-hover);
+}
+
+.globe-league-btn--join {
+  border-color: transparent;
+  background: var(--button);
+}
+
+.globe-league-btn--join:hover:not(:disabled) {
+  background: var(--button-hover);
+}
+
+.globe-league-btn:disabled {
+  opacity: 0.55;
+  cursor: default;
+}
+
+.globe-list-note,
+.globe-list-error {
+  font-size: 13px;
+  color: var(--text-2);
+}
+
+.globe-list-error {
+  margin-top: 8px;
+  color: #ff8a8a;
+}
+
+/* The join-code view of the side panel. */
+.globe-code-input {
+  flex: 1;
+  min-width: 0;
+  padding: 11px 14px;
+  border: 1px solid var(--line-strong);
+  border-radius: 10px;
+  background: var(--fill);
+  font: inherit;
+  font-size: 15px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text);
+  outline: none;
+  transition: border-color 0.15s ease;
+}
+.globe-code-input::placeholder {
+  letter-spacing: 0.04em;
+  text-transform: none;
+  color: var(--text-3);
+}
+.globe-code-input:focus {
+  border-color: var(--button);
+}
+.globe-code-submit {
+  padding: 10px 20px;
+}
+
+@media (max-width: 720px) {
+  .globe-discovery-head {
+    max-width: 22ch;
+  }
+  .globe-panel {
+    width: 100%;
+    border-left: none;
+    border-top: 1px solid rgba(255, 255, 255, 0.09);
+    height: auto;
+    top: auto;
+    bottom: 0;
+    transform: translateY(100%);
+  }
+  .globe-panel[data-open] {
+    transform: translateY(0);
+  }
+  .globe-quick-jump {
+    flex-direction: row;
+    top: auto;
+    bottom: 84px;
+    left: 50%;
+    right: auto;
+    transform: translate(-50%, 0);
+  }
+  .globe-quick-jump[data-dim] {
+    transform: translate(-50%, 12px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .globe-panel,
+  .globe-panel-inner,
+  .globe-action,
+  .globe-chip,
+  .globe-marker,
+  .globe-marker-button {
+    transition-duration: 0.01ms;
+    animation-duration: 0.01ms;
+  }
+}
+
+/* ---- Plain list for browsers without WebGL ---- */
+
+.globe-discovery-fallback {
+  min-height: 100vh;
+  padding: clamp(28px, 5vh, 48px) clamp(16px, 4vw, 48px);
+}
+
+.globe-fallback-list {
+  list-style: none;
+  margin: 28px 0 0;
+  padding: 0;
+  max-width: 640px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+/* Same as the Leagues page's league rows. */
+.globe-fallback-row {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 12px 16px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.globe-fallback-row .globe-panel-crest {
+  width: 40px;
+  height: 40px;
+  padding: 5px;
+  border-radius: 8px;
+}
+
+.globe-fallback-row .globe-badge {
+  align-self: center;
+}
+
+.globe-fallback-name {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.globe-fallback-league {
+  font-size: 14.5px;
+  font-weight: 500;
+  color: var(--text);
+}
+
+.globe-fallback-country {
+  font-size: 12.5px;
+  color: var(--text-3);
+}
+
+.globe-fallback-actions {
+  display: flex;
+  gap: 8px;
+}

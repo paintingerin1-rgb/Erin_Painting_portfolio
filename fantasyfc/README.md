@@ -1,42 +1,43 @@
 # FantasyFC: fantasy football for Entelect
 
-A fantasy football web app built by a team of five for **Entelect**, a South African software consultancy, as our third-year software engineering project at Stellenbosch University (RW344, 2026).
+A full-stack fantasy football web app built by a team of five for **Entelect**, a South African software consultancy, as our third-year software engineering project at Stellenbosch University (RW344, 2026).
 
 I was the **front-end and UI/UX lead**. I designed the interface, built the Players, Match Center and Standings pages, and wrote the TypeScript version of the scoring engine and its tests.
 
-**Live demo:** _add your Vercel link here after deploying (see [Deploy](#deploy))_
+**Live app:** [cuneiform-project.vercel.app](https://cuneiform-project.vercel.app) (the team's deployment; sign in with any Google account)
 
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/paintingerin1-rgb/Erin_Painting_portfolio&root-directory=fantasyfc)
+![Login](docs/screenshots/login.png)
 
-![Players page](docs/screenshots/players.png)
-
-| Match Center | Standings |
-| --- | --- |
-| ![Match Center](docs/screenshots/match-center.png) | ![Standings](docs/screenshots/standings.png) |
-
-| Scoring engine, checked against real FPL data | Mobile |
-| --- | --- |
-| ![Scoring engine](docs/screenshots/scoring.png) | ![Mobile standings](docs/screenshots/mobile-standings.png) |
+![League discovery globe](docs/screenshots/globe.png)
 
 ---
 
-## About this folder
+## What it does
 
-The full project lives in the university's private GitLab and was built for a client, so I can't publish the whole codebase. This folder is a runnable showcase of **the parts I built**, using my component code from the final release.
+A manager signs in with Google, then:
 
-The one thing I changed is the data layer. In production, every page reads from Supabase (Postgres) through a small API file. Here those API files return sample data behind the **same function signatures**, so the pages themselves are unchanged, and the demo runs anywhere with no backend, keys or setup.
+- **Discovers leagues on a 3D globe** across 10 competitions: the Premier League, LaLiga, Bundesliga, Serie A, Ligue 1, Eredivisie, Primeira Liga, South Africa's PSL, the MLS and Japan's J1 League.
+- **Creates or joins a league**, public or private with a join code.
+- **Drafts a 15-player squad** within a £100m budget. Position limits and budget checks run on the server, so they can't be bypassed from the browser.
+- **Sets a starting eleven** on a single-screen pitch view. Lineups lock at the gameweek deadline, and only starters score.
+- **Follows real fixtures and results**, grouped by gameweek, in the Match Center.
+- **Tracks a live league table** with rank movement, sortable by gameweek or total points.
+- **Chats with their league** in real time, with commissioner moderation.
 
----
+Scoring follows the official Fantasy Premier League rules, identical in every league, and is calculated from real match statistics.
 
-## The project in brief
+## Tech stack
 
-**The brief:** a fantasy football manager that's simpler than the official Fantasy Premier League app, with official FPL scoring identical in every league and Google sign-in only. Our guiding line was *fewer screens, less clutter, and nothing on the interface that needs explaining.*
+| Layer | Choice |
+| --- | --- |
+| Frontend | React 19, TypeScript, Vite, React Router |
+| 3D globe | Three.js via React Three Fiber, d3-geo, world-atlas |
+| Backend | Supabase: Postgres, Google OAuth, row-level security, realtime |
+| Data | football-data.org, the official FPL API, the ESPN API |
+| Testing | Vitest and React Testing Library: **281 tests across 27 files** |
+| CI/CD | Lint, test and build on every merge request, with automatic deploys to Vercel |
 
-**What a manager can do in the final product:** discover and join leagues from a 3D globe across **10 competitions** (including South Africa's PSL, the MLS and Japan's J1 League), draft a 15-player squad within a £100m budget, set a starting eleven that locks at the gameweek deadline, follow real fixtures and results, track a live league table, and chat with their league.
-
-**Stack:** React 19, TypeScript, Vite, React Router, and Supabase (Postgres, Google OAuth and row-level security), deployed on Vercel. Data comes from football-data.org, the ESPN API and the official FPL feed.
-
-**Team:** five developers over three sprints. Each sprint ended in a review and a live demo for Entelect.
+There's no separate API server. The browser talks to Postgres through Supabase, every table is protected by row-level security policies, and sensitive actions like drafting a player or joining a league run as database functions.
 
 ---
 
@@ -46,20 +47,20 @@ The one thing I changed is the data layer. In production, every page reads from 
 
 - Before any code, I drew up questions for the client, wireframed **13 screens**, and wrote the **style guide**: the colour system, the typography (Oswald for headings and numbers, Inter for body text) and the component patterns the whole team built on.
 - I iterated on the design through Q&A sessions with the client and their visual feedback each sprint.
-- The visual direction is *matchday at night*: a dark stadium feel, one violet accent so it's always clear what's clickable, and a scoreboard-style font for the numbers that matter.
+- The visual direction is *matchday at night*: a dark, floodlit-stadium feel, one violet accent so it's always clear what's clickable, and a scoreboard-style font for the numbers that matter.
 - For anything with more than one reasonable design, I built clickable HTML previews of the options before writing component code. For example, I mocked three versions of the Standings sort control in the app's real colours, and we picked the clearest one.
 
-### Pages and components I built
+### Code I wrote
 
-| What | Highlights |
-| --- | --- |
-| **Players** | Search by player or club, position and league filters, server-side pagination with a stable sort, equal-size cards |
-| **Match Center** | Live / upcoming / completed tabs, fixtures grouped by gameweek, real results from the FPL feed |
-| **Standings** | League table with rank movement, sortable by gameweek or total points, a scoring tooltip for new players, "you" highlighting |
-| **FixtureRow** (with Dannike) | One shared fixture component for the Dashboard and Match Center: teams centred on a "vs" or the score, plus a won/drew/lost dot for each side |
-| **Dashboard polish** | Live gameweek countdown, centred fixtures |
-| **Date formatting** | One shared formatter for every kickoff and deadline, so pages can't drift apart |
-| **Scoring engine (TypeScript)** | Official FPL rules as a pure function, tested rule by rule and against real players' published scores |
+| Area | Where | Highlights |
+| --- | --- | --- |
+| **Players page** | [`src/features/players`](src/features/players) | Search by player or club, position and league filters, server-side pagination with a stable sort, equal-size cards |
+| **Match Center** | [`src/features/matchCenter`](src/features/matchCenter) | Live / upcoming / completed tabs, fixtures grouped by gameweek |
+| **Standings** | [`src/features/standings`](src/features/standings) | Rank movement, sortable gameweek and total columns, a scoring tooltip for new players, "you" highlighting |
+| **FixtureRow** (with Dannike) | [`src/components/FixtureRow`](src/components/FixtureRow) | One shared fixture component for the Dashboard and Match Center: teams centred on "vs" or the score, plus won/drew/lost dots |
+| **Dashboard polish** | [`src/features/dashboard`](src/features/dashboard) | Live "Gameweek begins in" countdown, centred fixtures |
+| **Date formatting** | [`src/lib/dateFormat.ts`](src/lib/dateFormat.ts) | One shared formatter for every kickoff and deadline |
+| **Scoring engine (TypeScript)** | [`src/features/scoring`](src/features/scoring) | Official FPL rules as a pure function, with 43 rule-by-rule tests plus tests against real players' published scores |
 
 ---
 
@@ -77,7 +78,7 @@ The one thing I changed is the data layer. In production, every page reads from 
 - The production site ran a version behind at the demo, because deploys were manual.
 
 **What we changed:**
-- We protected the main branch: every change goes through a merge request, branches live at most three days, and you post what you're picking up before starting.
+- We protected the main branch: every change goes through a merge request, branches live at most three days, and you post what you're picking up before starting. This is all written up in [`CONTRIBUTING.md`](CONTRIBUTING.md).
 - Every merge request needs one approval from someone else, never yourself.
 - We added a CI pipeline (lint, tests and build) that blocks a merge if anything fails, and automated deployment.
 - We built a who-did-what table from our commit history, and planned the next demo to the minute.
@@ -99,7 +100,7 @@ The one thing I changed is the data layer. In production, every page reads from 
 - We didn't run a retrospective that sprint.
 - I also hit a class of bug I hadn't expected: all the CSS ends up in one bundle, so two pages using the same class name quietly overwrite each other.
 
-**What we changed:** Entelect gave us six points of feedback, and each one became an item in the Sprint 3 backlog with a visible answer. Pricing was reworked so it depends on a player's status, not just their club. I started giving every page's CSS its own prefix.
+**What we changed:** Entelect gave us six points of feedback, and each one became an item in the Sprint 3 backlog with a visible answer. Pricing was reworked: Premier League players now use FPL's own prices, and every other league is ranked by a status score. I started giving every page's CSS its own prefix.
 
 ### Sprint 3: Scale and polish
 
@@ -138,7 +139,7 @@ The one thing I changed is the data layer. In production, every page reads from 
 - **Coordination:** a one-line message in our dev channel before starting a task, so nobody duplicated work.
 - **Reviews and retrospectives** with the client at the end of each sprint.
 
-By the final release, the project had around **280 automated tests**.
+The full team workflow is in [`CONTRIBUTING.md`](CONTRIBUTING.md).
 
 ---
 
@@ -146,54 +147,54 @@ By the final release, the project had around **280 automated tests**.
 
 If you're an engineer reviewing this, these are the parts worth reading:
 
-1. **A scoring engine verified against reality.** [`src/features/scoring/fplPoints.ts`](src/features/scoring/fplPoints.ts) is a pure function: stats and position in, points out. Its tests feed in nine real players' gameweek-5 stat lines and check the output matches the points FPL actually published, covering every position and every threshold rule. The demo's *Scoring Engine* page runs it live in the browser and shows the breakdown rule by rule.
+1. **A scoring engine checked against reality.** [`fplPoints.ts`](src/features/scoring/fplPoints.ts) is a pure function: stats and position in, points out. Its tests feed in real players' gameweek-5 stat lines and check the output matches the points FPL actually published. The database has its own SQL version of the same rules, which powers the live standings.
 2. **Points are derived, never stored.** Only raw match stats are saved. If a rule changes, every score recalculates with no data migration.
-3. **Stable pagination.** [`playersApi.ts`](src/features/players/playersApi.ts) sorts by price and then by ID. Many players share a price, and without a unique tie-breaker, page 2 could repeat or skip a player from page 1.
-4. **Logic kept testable.** [`formatCountdown`](src/lib/dateFormat.ts) takes the current time as a parameter, so it can be tested without fake timers. [`fixtureResult.ts`](src/components/FixtureRow/fixtureResult.ts) keeps the won/drew/lost logic out of the component.
-5. **Accessibility.** The sort headers are real buttons with `aria-sort`, the tooltip opens on keyboard focus, and the result dots have text labels for screen readers.
+3. **Security in the database, not the browser.** Row-level security on every table, and server-side functions for drafting, budgets and league membership. See [`supabase/migrations`](supabase/migrations).
+4. **Stable pagination.** [`playersApi.ts`](src/features/players/playersApi.ts) sorts by price and then by ID. Many players share a price, and without a unique tie-breaker, page 2 could repeat or skip a player from page 1.
+5. **Logic kept testable.** [`formatCountdown`](src/lib/dateFormat.ts) takes the current time as a parameter, so it can be tested without fake timers. [`fixtureResult.ts`](src/components/FixtureRow/fixtureResult.ts) keeps the won/drew/lost logic out of the component.
+6. **Reproducible data pipelines.** Ingestion scripts in [`scripts/`](scripts) load squads, fixtures and stats for all 10 leagues, and are safe to re-run.
 
 ---
 
-## What's in this folder
+## Project structure
 
 ```
 src/
-  components/
-    FixtureRow/          shared fixture row + result logic (+ tests)
-    Layout/              sidebar shell for the demo
-  features/
-    players/             Players page (+ test)
-    matchCenter/         Match Center page
-    standings/           Standings page (+ tests: sorting, empty and error states)
-    scoring/             FPL scoring engine (+ 53 tests) and the Scoring Engine page (+ 2)
-    */…Api.ts            data layer: sample data here, Supabase in production
-  lib/dateFormat.ts      shared kickoff / countdown formatting (+ tests)
-  data/                  sample data and real gameweek-5 stat lines
+  features/        one folder per page: globe, leagues, draft, squad, players,
+                   matchCenter, standings, dashboard, messages, scoring, auth
+  components/      shared UI: FixtureRow, Sidebar, LeagueSwitcher, PlayerCard, ...
+  contexts/        the current league, shared across every page
+  lib/             Supabase client, data-access helpers, date formatting
+supabase/
+  migrations/      database schema, functions and row-level security policies
+scripts/           data ingestion and seeding for all 10 leagues (+ tests)
+docs/TECHNICAL.md  the team's full developer guide
 ```
 
-**84 tests**, run with Vitest and React Testing Library.
+## Running it yourself
 
-## Run it locally
+The app needs a Supabase project behind it. A free one is enough.
 
-You'll need Node 20.19 or newer.
+1. **Create a Supabase project**, then apply the schema:
+   ```bash
+   cd fantasyfc
+   npm install
+   npx supabase link --project-ref <your-project-ref>
+   npx supabase db push
+   ```
+2. **Enable Google sign-in:** in Supabase, go to Authentication → Providers → Google, and add your site URL under the redirect URLs.
+3. **Add your keys:**
+   ```bash
+   cp .env.example .env.local   # then fill in your project URL and publishable key
+   ```
+4. **Load football data:** the ingestion scripts need a service-role key and a free football-data.org key in a gitignored `.env.ingest`. The run order is in [`docs/TECHNICAL.md`](docs/TECHNICAL.md#loading-football-data).
+5. **Start it:**
+   ```bash
+   npm run dev      # http://localhost:5173
+   npm test         # 281 tests, no database needed
+   ```
 
-```bash
-cd fantasyfc
-npm install
-npm run dev      # http://localhost:5173
-npm test         # 84 tests
-npm run build
-```
-
-## Deploy
-
-Click the **Deploy with Vercel** button at the top, or deploy by hand:
-
-1. Import this repository into Vercel.
-2. Set the **Root Directory** to `fantasyfc`.
-3. Click Deploy. Vercel detects Vite automatically, and `vercel.json` handles page routing.
-
-No environment variables are needed.
+**Deploying to Vercel:** import the repo, set the **Root Directory** to `fantasyfc`, and add `VITE_SUPABASE_URL` and `VITE_SUPABASE_PUBLISHABLE_KEY` as environment variables. Then add the Vercel URL to your Supabase redirect URLs.
 
 A GitHub Actions workflow (`.github/workflows/fantasyfc-ci.yml`) runs lint, tests and a build on every push that touches this folder.
 
@@ -201,7 +202,7 @@ A GitHub Actions workflow (`.github/workflows/fantasyfc-ci.yml`) runs lint, test
 
 - Widen the UI test coverage to match the logic tests.
 - Move to scoped styles (CSS Modules), which makes the class-collision bugs impossible.
-- Code-split the pages and compress the large images to cut the first load in production.
+- Code-split the pages, especially the globe, and compress the large background images to speed up the first load.
 - Merge the two TypeScript scoring files into one.
 
 ## Team

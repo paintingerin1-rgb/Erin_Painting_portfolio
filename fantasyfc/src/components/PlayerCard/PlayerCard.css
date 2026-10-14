@@ -1,0 +1,145 @@
+.pcard {
+  position: relative;
+  width: 62px;
+  cursor: pointer;
+  border: none;
+  background: none;
+  padding: 0;
+  font-family: "Inter", sans-serif;
+}
+
+.pcard-face {
+  width: 62px;
+  height: 78px;
+  border-radius: 10px 10px 6px 6px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 6px 0 0;
+  position: relative;
+  box-shadow:
+    0 4px 10px rgba(0, 0, 0, 0.4),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.15);
+  overflow: hidden;
+}
+
+.pcard-face::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    155deg,
+    rgba(255, 255, 255, 0.22),
+    rgba(255, 255, 255, 0) 40%
+  );
+}
+
+.pcard--GK .pcard-face {
+  background: linear-gradient(160deg, #b8863d, #6b4a1a);
+}
+.pcard--DEF .pcard-face {
+  background: linear-gradient(160deg, #8b6dc7, #4a3370);
+}
+.pcard--MID .pcard-face {
+  background: linear-gradient(160deg, #5fb87a, #2c6b3f);
+}
+.pcard--FWD .pcard-face {
+  background: linear-gradient(160deg, #d9667a, #7d2e3d);
+}
+
+.pcard-rating {
+  position: absolute;
+  top: 4px;
+  left: 5px;
+  z-index: 2;
+  text-align: left;
+}
+
+.pcard-rating__num {
+  display: block;
+  font-family: "Oswald", sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+  color: #fff;
+  line-height: 1;
+}
+
+.pcard-rating__pos {
+  display: block;
+  font-size: 7px;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  color: rgba(255, 255, 255, 0.85);
+  margin-top: 1px;
+}
+
+.pcard-badge {
+  position: absolute;
+  top: -6px;
+  right: -6px;
+  z-index: 3;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  font-size: 8.5px;
+  font-weight: 800;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.5);
+}
+
+.badge-c {
+  background: #fff;
+  color: #4a3370;
+}
+.badge-v {
+  background: rgba(0, 0, 0, 0.55);
+  color: #fff;
+  border: 1px solid rgba(255, 255, 255, 0.5);
+}
+
+.pcard-jersey {
+  position: relative;
+  z-index: 2;
+  width: 30px;
+  height: 30px;
+  margin-top: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+}
+
+.pcard-jersey svg {
+  width: 26px;
+  height: 26px;
+  filter: drop-shadow(0 2px 3px rgba(0, 0, 0, 0.35));
+}
+
+.pcard-name-band {
+  position: relative;
+  z-index: 2;
+  margin-top: auto;
+  width: 100%;
+  padding: 3px 0 5px;
+  text-align: center;
+  background: rgba(0, 0, 0, 0.28);
+}
+
+.pcard-name {
+  font-size: 8.5px;
+  font-weight: 800;
+  color: #fff;
+  text-transform: uppercase;
+  letter-spacing: 0.01em;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  padding: 0 4px;
+  display: block;
+}
+
+.pcard--dimmed {
+  opacity: 0.55;
+}

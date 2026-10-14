@@ -1,5 +1,6 @@
-# CI for the FantasyFC project folder: the same three gates the team's
-# GitLab pipeline enforced on every merge request - lint, tests, build.
+# CI for FantasyFC: the same three gates the team's GitLab pipeline enforced
+# on every merge request - lint, tests, build. Tests need no database: the
+# Supabase client is mocked and vite.config.ts supplies dummy env values.
 name: FantasyFC CI
 
 on:
@@ -19,7 +20,7 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
-          node-version: 22
+          node-version: 24
           cache: npm
           cache-dependency-path: fantasyfc/package-lock.json
       - run: npm ci

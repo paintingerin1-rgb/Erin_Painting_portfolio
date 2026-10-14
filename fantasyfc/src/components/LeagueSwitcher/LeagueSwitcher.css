@@ -1,0 +1,190 @@
+/* LeagueSwitcher.css - the league card at the top of the sidebar. */
+
+.lswitch {
+  position: relative;
+  padding: 0 10px 4px;
+}
+
+.lswitch__label {
+  padding: 14px 6px 8px;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.35);
+}
+
+.lswitch__card {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  padding: 9px 8px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 12px;
+  color: #fff;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+  transition: border-color 0.15s ease, background-color 0.15s ease;
+}
+
+.lswitch__card:hover {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(167, 139, 218, 0.6);
+}
+
+.lswitch__card:focus-visible {
+  outline: 2px solid #a78bda;
+  outline-offset: 2px;
+}
+
+.lswitch__card--open {
+  background: rgba(139, 109, 199, 0.16);
+  border-color: #a78bda;
+}
+
+.lswitch__card--loading {
+  cursor: default;
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.lswitch__badge {
+  display: inline-flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 8px;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.02em;
+}
+
+.lswitch__badge--long {
+  font-size: 9px;
+}
+
+.lswitch__text {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.lswitch__name {
+  overflow: hidden;
+  font-size: 13px;
+  font-weight: 700;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.lswitch__sub {
+  display: flex;
+  align-items: center;
+  gap: 3px;
+  min-width: 0;
+  font-size: 11px;
+  color: rgba(255, 255, 255, 0.55);
+}
+
+.lswitch__sub-text {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.lswitch__vis-icon {
+  flex-shrink: 0;
+  width: 11px;
+  height: 11px;
+}
+
+.lswitch__chevron {
+  flex-shrink: 0;
+  width: 14px;
+  height: 14px;
+  fill: none;
+  stroke: rgba(255, 255, 255, 0.7);
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  transition: transform 0.15s ease;
+}
+
+.lswitch__card--open .lswitch__chevron {
+  transform: rotate(180deg);
+}
+
+.lswitch__badge--small {
+  width: 22px;
+  height: 22px;
+  border-radius: 6px;
+  font-size: 9.5px;
+}
+
+.lswitch__badge--small.lswitch__badge--long {
+  font-size: 8px;
+}
+
+/* Opens inside the sidebar, below the card, and scrolls past about three
+   leagues, so the menu underneath moves down rather than being covered. */
+.lswitch__list {
+  max-height: 150px;
+  margin: 6px 0 0;
+  padding: 3px;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  list-style: none;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.09);
+  border-radius: 12px;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(167, 139, 218, 0.5) transparent;
+}
+
+.lswitch__list::-webkit-scrollbar {
+  width: 4px;
+}
+
+.lswitch__list::-webkit-scrollbar-thumb {
+  background: rgba(167, 139, 218, 0.5);
+  border-radius: 3px;
+}
+
+.lswitch__option {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  padding: 7px 6px;
+  border-radius: 9px;
+  color: #fff;
+  cursor: pointer;
+}
+
+.lswitch__option .lswitch__name {
+  font-size: 12.5px;
+  font-weight: 600;
+}
+
+.lswitch__option .lswitch__sub {
+  font-size: 10px;
+}
+
+.lswitch__option--active {
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.lswitch__option--selected {
+  background: rgba(139, 109, 199, 0.22);
+  box-shadow: inset 2px 0 0 #a78bda;
+}
+
+.lswitch__option--selected .lswitch__name {
+  font-weight: 800;
+}

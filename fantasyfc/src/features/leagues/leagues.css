@@ -1,0 +1,573 @@
+@import url("https://fonts.googleapis.com/css2?family=Oswald:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap");
+
+/* Sits inside AppLayout now, so it no longer owns the viewport or paints
+   its own background - the shared stadium backdrop shows through. */
+.leagues-page {
+  width: 100%;
+  font-family: "Inter", -apple-system, "Segoe UI", sans-serif;
+}
+
+.leagues-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 24px 32px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.leagues-header__brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.leagues-header__brand-mark {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 9px;
+  background: linear-gradient(135deg, #7c3aed, #a855f7);
+  box-shadow: 0 0 18px rgba(168, 85, 247, 0.55);
+}
+
+.leagues-header__brand-mark svg {
+  width: 18px;
+  height: 18px;
+  color: #fff;
+}
+
+.leagues-header__brand-name {
+  font-family: "Oswald", sans-serif;
+  font-size: 17px;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.75);
+}
+
+.leagues-header__brand-name span {
+  font-weight: 700;
+  color: #fff;
+  background: linear-gradient(90deg, #d8b4fe, #f0abfc);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  margin-left: 1px;
+}
+
+.leagues-header__sign-out {
+  padding: 8px 16px;
+  font-family: "Inter", sans-serif;
+  font-size: 12.5px;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.55);
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 8px;
+  cursor: pointer;
+  transition:
+    background 0.15s ease,
+    color 0.15s ease;
+}
+
+.leagues-header__sign-out:hover {
+  background: rgba(255, 255, 255, 0.1);
+  color: #fff;
+}
+
+.leagues-main {
+  max-width: 640px;
+  margin: 0 auto;
+  padding: 48px 24px 64px;
+}
+
+/* toast */
+
+.leagues-toast {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 24px;
+  padding: 13px 16px;
+  border-radius: 10px;
+  background: rgba(124, 58, 237, 0.16);
+  border: 1px solid rgba(168, 85, 247, 0.4);
+  color: #e9d5ff;
+  font-size: 13.5px;
+}
+
+.leagues-toast__code {
+  font-family: "Oswald", sans-serif;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  color: #f0abfc;
+}
+
+.leagues-toast__dismiss {
+  margin-left: auto;
+  padding: 0 4px;
+  font-size: 18px;
+  line-height: 1;
+  color: rgba(255, 255, 255, 0.4);
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.leagues-toast__dismiss:hover {
+  color: #fff;
+}
+
+/* empty state */
+
+.leagues-empty {
+  text-align: center;
+  padding: 56px 24px;
+}
+
+.leagues-empty__title {
+  font-family: "Oswald", sans-serif;
+  font-size: 24px;
+  font-weight: 600;
+  color: #fff;
+  margin: 0 0 8px;
+}
+
+.leagues-empty__subtitle {
+  font-size: 13.5px;
+  color: rgba(255, 255, 255, 0.55);
+  margin: 0 0 32px;
+}
+
+/* populated state */
+
+.leagues-list-heading {
+  font-family: "Oswald", sans-serif;
+  font-size: 20px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+  color: #fff;
+  margin: 0 0 16px;
+}
+
+.leagues-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 28px;
+  list-style: none;
+  padding: 0;
+}
+
+.league-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 15px 18px;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  cursor: pointer;
+  transition: background 0.15s ease;
+  text-align: left;
+  width: 100%;
+  color: inherit;
+  font: inherit;
+}
+
+.league-row:hover {
+  background: rgba(255, 255, 255, 0.07);
+}
+
+.league-row--static {
+  cursor: default;
+}
+
+.league-row--static:hover {
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.league-row__name {
+  font-size: 14.5px;
+  font-weight: 500;
+  color: #fff;
+}
+
+.league-row__badge {
+  padding: 3px 10px;
+  border-radius: 999px;
+  font-size: 10.5px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.league-row__badge--public {
+  background: rgba(74, 222, 128, 0.12);
+  color: #4ade80;
+}
+
+.league-row__badge--private {
+  background: rgba(168, 85, 247, 0.15);
+  color: #c084fc;
+}
+
+.leagues-coming-soon {
+  margin-top: -2px;
+  margin-bottom: 20px;
+  padding: 10px 14px;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.05);
+  color: rgba(255, 255, 255, 0.55);
+  font-size: 12.5px;
+}
+
+/* CTA row (shared by empty + populated states) */
+
+.leagues-ctas {
+  display: flex;
+  gap: 14px;
+}
+
+/* Under the leagues list: the two buttons share the list's width. */
+.leagues-ctas--split {
+  margin-top: 18px;
+}
+
+.leagues-ctas--split .leagues-cta {
+  padding: 12px 18px;
+  font-size: 13px;
+}
+
+.leagues-cta {
+  flex: 1;
+  padding: 13px 20px;
+  font-family: "Inter", sans-serif;
+  font-size: 13.5px;
+  font-weight: 600;
+  border-radius: 10px;
+  cursor: pointer;
+  text-align: center;
+  text-decoration: none;
+  transition:
+    background 0.15s ease,
+    transform 0.1s ease;
+}
+
+.leagues-cta:active {
+  transform: scale(0.98);
+}
+
+.leagues-cta--primary {
+  background: #7c3aed;
+  color: #fff;
+  border: none;
+}
+
+.leagues-cta--primary:hover {
+  background: #6d28d9;
+}
+
+.leagues-cta--secondary {
+  background: rgba(255, 255, 255, 0.05);
+  color: #fff;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+.leagues-cta--secondary:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.leagues-cta--danger {
+  background: #dc2626;
+  color: #fff;
+  border: 1px solid #dc2626;
+}
+
+.leagues-cta--danger:hover {
+  background: #b91c1c;
+}
+
+/* Low-emphasis variant for per-row actions (e.g. Kick). */
+.leagues-cta--danger-outline {
+  background: transparent;
+  color: #f87171;
+  border: 1px solid rgba(248, 113, 113, 0.5);
+}
+
+.leagues-cta--danger-outline:hover {
+  background: rgba(248, 113, 113, 0.1);
+}
+
+.leagues-cta--compact {
+  flex: none;
+  padding: 10px 18px;
+  font-size: 12.5px;
+}
+
+/* forms (create + join) */
+
+.leagues-back-link {
+  display: inline-block;
+  margin-bottom: 20px;
+  font-size: 12.5px;
+  color: rgba(255, 255, 255, 0.5);
+  text-decoration: none;
+}
+
+.leagues-back-link:hover {
+  color: #fff;
+}
+
+.leagues-form-title {
+  font-family: "Oswald", sans-serif;
+  font-size: 24px;
+  font-weight: 600;
+  color: #fff;
+  margin: 0 0 24px;
+}
+
+.leagues-field {
+  margin-bottom: 18px;
+}
+
+.leagues-field__label {
+  display: block;
+  margin-bottom: 6px;
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.4);
+}
+
+.leagues-field__input {
+  width: 100%;
+  padding: 11px 13px;
+  font-family: "Inter", sans-serif;
+  font-size: 13.5px;
+  color: #fff;
+  background: rgba(0, 0, 0, 0.4);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 9px;
+  outline: none;
+}
+
+.leagues-field__input::placeholder {
+  color: rgba(255, 255, 255, 0.3);
+}
+
+.leagues-field__input:focus {
+  border-color: #a855f7;
+}
+
+.leagues-visibility {
+  display: flex;
+  gap: 10px;
+}
+
+.leagues-visibility__option {
+  flex: 1;
+  padding: 11px;
+  text-align: center;
+  font-size: 13px;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.6);
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 9px;
+  cursor: pointer;
+}
+
+.leagues-visibility__option--active {
+  color: #fff;
+  background: rgba(168, 85, 247, 0.18);
+  border-color: #a855f7;
+}
+
+.leagues-submit {
+  width: 100%;
+  margin-top: 6px;
+  padding: 13px 16px;
+  font-family: "Inter", sans-serif;
+  font-size: 13.5px;
+  font-weight: 700;
+  color: #fff;
+  background: #7c3aed;
+  border: none;
+  border-radius: 9px;
+  cursor: pointer;
+  transition: background 0.15s ease;
+}
+
+.leagues-submit:hover:not(:disabled) {
+  background: #6d28d9;
+}
+
+.leagues-submit:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.leagues-error {
+  margin-top: 14px;
+  padding: 11px 14px;
+  border-radius: 8px;
+  background: rgba(248, 113, 113, 0.1);
+  border: 1px solid rgba(248, 113, 113, 0.3);
+  color: #f87171;
+  font-size: 12.5px;
+}
+
+/* join screen specifics */
+
+
+
+
+.leagues-join-code-row {
+  display: flex;
+  gap: 10px;
+}
+
+.leagues-join-code-row .leagues-field__input {
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.leagues-empty-list {
+  padding: 20px;
+  text-align: center;
+  color: rgba(255, 255, 255, 0.4);
+  font-size: 13px;
+  background: rgba(255, 255, 255, 0.03);
+  border-radius: 10px;
+}
+
+.leagues-joined-pill {
+  padding: 6px 14px;
+  border-radius: 8px;
+  font-size: 12px;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.35);
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  white-space: nowrap;
+}
+
+.leagues-join-btn {
+  padding: 6px 16px;
+  font-size: 12.5px;
+  font-weight: 600;
+  color: #fff;
+  background: #7c3aed;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.leagues-join-btn:hover:not(:disabled) {
+  background: #6d28d9;
+}
+
+.leagues-join-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.leagues-loading {
+  padding: 80px 24px;
+  text-align: center;
+  color: rgba(255, 255, 255, 0.4);
+  font-size: 13.5px;
+}
+
+/* Join a League: public leagues with search, and the join code in a panel
+   beside them instead of below every public league. */
+
+.leagues-main--join {
+  max-width: 980px;
+}
+
+.leagues-join-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 300px;
+  grid-template-areas: "public code";
+  gap: 28px;
+  align-items: start;
+}
+
+.leagues-join-public {
+  grid-area: public;
+  min-width: 0;
+}
+
+.leagues-join-code-panel {
+  grid-area: code;
+  position: sticky;
+  top: 24px;
+  padding: 20px;
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.leagues-join-code-panel__title,
+.leagues-join-section-title {
+  margin: 0 0 6px;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.55);
+}
+
+.leagues-join-section-title {
+  margin-bottom: 12px;
+}
+
+.leagues-join-code-panel__sub {
+  margin: 0 0 16px;
+  font-size: 13px;
+  line-height: 1.45;
+  color: rgba(255, 255, 255, 0.55);
+}
+
+.leagues-join-search {
+  margin-bottom: 10px;
+}
+
+.leagues-join-count {
+  margin: 0 0 12px;
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.4);
+}
+
+.league-row__text {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.league-row__competition {
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.45);
+}
+
+@media (max-width: 760px) {
+  .leagues-join-layout {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-areas:
+      "code"
+      "public";
+    gap: 24px;
+  }
+
+  .leagues-join-code-panel {
+    position: static;
+  }
+}

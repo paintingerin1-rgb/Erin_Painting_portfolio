@@ -1,0 +1,403 @@
+/* DashboardPage.css */
+
+@import url("https://fonts.googleapis.com/css2?family=Oswald:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap");
+
+/* ===== layout ===== */
+.dashboard {
+  position: relative;
+  z-index: 10;
+  display: flex;
+  min-height: 100vh;
+  font-family: "Inter", sans-serif;
+}
+
+.dashboard__main {
+  flex: 1;
+  padding: 24px 32px 40px;
+  min-width: 0;
+}
+
+.dashboard__header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin-bottom: 14px;
+}
+
+.dashboard__eyebrow {
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #cbbcec;
+  margin: 0 0 4px;
+}
+
+.dashboard__title {
+  font-family: "Oswald", sans-serif;
+  font-size: 24px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+  color: #fff;
+  margin: 8px 0 0;
+}
+
+.dashboard__powered {
+  font-size: 10px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.4);
+  padding-top: 6px;
+}
+
+.dashboard__pitch-divider {
+  height: 2px;
+  margin-top: 24px;
+  margin-bottom: 22px;
+  border-radius: 2px;
+  background: repeating-linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0.18) 0 10px,
+    transparent 10px 20px
+  );
+  opacity: 0.5;
+}
+
+.dashboard__budget-badge {
+  font-family: "Oswald", sans-serif;
+  font-size: 18px;
+  font-weight: 700;
+  color: #fff;
+  background: rgba(255, 255, 255, 0.1);
+  padding: 8px 16px;
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+/* ===== stat cards ===== */
+/* .stat-card* styling itself now lives in StatCard.css - StatCard.tsx
+   renders these tiles, so defining the same classes here too would just be
+   a second copy to keep in sync. */
+.dashboard__stats {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+  margin-bottom: 20px;
+}
+
+.dashboard__status,
+.dashboard__error {
+  padding: 20px 0;
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.45);
+}
+
+.dashboard__error {
+  color: #f87171;
+}
+
+/* ===== content grid ===== */
+.dashboard__content-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  align-items: stretch;
+}
+
+@media (min-width: 1080px) {
+  .dashboard-card:nth-child(4) {
+    grid-column: span 2;
+  }
+}
+
+.panel {
+  background: rgba(32, 30, 38, 0.68);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.panel__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 20px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.09);
+}
+
+.panel__title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.9);
+  margin: 0;
+}
+
+.panel__title svg {
+  width: 14px;
+  height: 14px;
+  color: #c7b6e8;
+}
+
+.panel__title-tag {
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  color: rgba(255, 255, 255, 0.45);
+}
+
+.panel__view-all {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 6px 12px;
+  font-size: 11px;
+  font-weight: 700;
+  color: #fff;
+  background: linear-gradient(90deg, #6d4fa8, #8b6dc7);
+  border: none;
+  border-radius: 7px;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.dashboard-card__body {
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.dashboard-card__body p {
+  margin: 0;
+  color: rgba(255, 255, 255, 0.8);
+  font-size: 14px;
+}
+
+.dashboard-card__big-stat {
+  font-family: "Oswald", sans-serif;
+  font-size: 28px;
+  font-weight: 700;
+  color: #fff;
+}
+
+/* Tabular figures so the ticking countdown doesn't change width as the
+   digits change. */
+.dashboard-card__countdown {
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.01em;
+}
+
+.dashboard-card__sub-stat {
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.dashboard-card__action-btn {
+  display: inline-block;
+  text-align: center;
+  padding: 10px 16px;
+  background: linear-gradient(90deg, #6d4fa8, #8b6dc7);
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  font-weight: 600;
+  cursor: pointer;
+  margin-top: 8px;
+  text-decoration: none;
+}
+
+.join-code-badge {
+  font-family: monospace;
+  background: rgba(255, 255, 255, 0.15);
+  padding: 4px 8px;
+  border-radius: 4px;
+  letter-spacing: 2px;
+  color: #fff;
+}
+
+/* ===== performers table ===== */
+.performers-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.performers-table th {
+  text-align: left;
+  padding: 10px 20px;
+  font-size: 9.5px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.45);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+}
+
+.performers-table td {
+  padding: 12px 20px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  vertical-align: middle;
+}
+
+.performers-table tr:last-child td {
+  border-bottom: none;
+}
+
+.performers-table tr:hover td {
+  background: rgba(255, 255, 255, 0.03);
+}
+
+.player-cell {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.crest {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: "Oswald", sans-serif;
+  font-size: 10px;
+  font-weight: 700;
+  color: #fff;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  /* One consistent look for every club, rather than the three hand-picked
+     gradients this replaced - those only covered Man City/Liverpool/Arsenal
+     and wouldn't have scaled to real gameweek data pulling in any of the
+     20 PL clubs. */
+  background: linear-gradient(135deg, #6d4fa8, #8b6dc7);
+}
+
+.player-cell__name {
+  font-size: 13px;
+  font-weight: 700;
+  color: #fff;
+}
+
+.pos-badge {
+  display: inline-block;
+  padding: 3px 8px;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.03em;
+  color: #fff;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 5px;
+}
+
+.club-cell {
+  font-size: 12.5px;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.75);
+}
+
+.price-cell {
+  font-size: 12.5px;
+  font-weight: 600;
+  color: #fff;
+}
+
+.pts-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 34px;
+  padding: 5px 10px;
+  font-family: "Oswald", sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+  color: #fff;
+  background: linear-gradient(135deg, #6d4fa8, #8b6dc7);
+  border-radius: 7px;
+}
+
+/* ===== fixtures panel =====
+   Prefixed `dash-` on purpose: MatchCenterPage.css defines its own
+   `.fixture`, `.fixture__time`, `.fixture__match` and `.fixture__vs`, and
+   every stylesheet ends up in one bundle - so the two were overwriting
+   each other depending on load order. */
+.dash-fixtures-list {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding: 16px 20px 20px;
+}
+
+.dash-fixtures-list__empty {
+  margin: 0;
+  font-size: 14px;
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.dash-fixture {
+  padding-bottom: 14px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+}
+
+.dash-fixture:last-child {
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+.messages-list {
+  padding: 16px 20px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.messages-list p {
+  margin: 0;
+  color: rgba(255, 255, 255, 0.8);
+  font-size: 14px;
+}
+
+.dashboard-message {
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.9);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+  padding-bottom: 12px;
+}
+
+.dashboard-message:last-child {
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+.dashboard-message__author {
+  font-weight: 700;
+  color: #c7b6e8;
+}
+
+.dashboard-message__time {
+  font-size: 10px;
+  color: rgba(255, 255, 255, 0.45);
+  margin-top: 4px;
+}
+
+@media (max-width: 1080px) {
+  .dashboard__stats {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .dashboard__content-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .dashboard__content-grid {
+    grid-template-columns: 1fr;
+  }
+}

@@ -1,0 +1,25 @@
+# Development environment. One command, same Node version for everyone:
+#
+#   cp .env.example .env.local     # once
+#   docker compose up
+#
+# Then open http://localhost:5173. Hot reload works - src/ is bind-mounted.
+#
+# Requires the Compose plugin (`docker compose`, not `docker-compose`).
+# On Ubuntu: sudo apt install docker-compose-v2
+
+services:
+  web:
+    image: node:24-alpine
+    working_dir: /app
+    command: sh -c "npm install && npm run dev -- --host 0.0.0.0"
+    ports:
+      - "5173:5173"
+    volumes:
+      - .:/app
+      # Anonymous volume keeps the container's node_modules separate from the
+      # host's. Without it a Linux/Mac/Windows mismatch in native deps breaks
+      # the container for whoever is not on the same OS as whoever ran npm last.
+      - /app/node_modules
+    env_file:
+      - .env.local

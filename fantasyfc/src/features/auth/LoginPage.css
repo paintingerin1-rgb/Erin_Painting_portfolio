@@ -1,0 +1,525 @@
+@import url("https://fonts.googleapis.com/css2?family=Oswald:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap");
+
+.login-page {
+  position: relative;
+  min-height: 100vh;
+  width: 100%;
+  overflow: hidden;
+  background: #050208;
+  font-family:
+    "Inter",
+    -apple-system,
+    "Segoe UI",
+    sans-serif;
+}
+
+.login-page__bg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: contrast(1.08) saturate(1.15) brightness(0.85);
+}
+
+.login-page__overlay-dark {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to bottom,
+    rgba(0, 0, 0, 0.75) 0%,
+    rgba(0, 0, 0, 0.45) 45%,
+    rgba(0, 0, 0, 0.85) 100%
+  );
+}
+
+.login-page__overlay-violet {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(88, 28, 135, 0.35), transparent 55%);
+}
+
+/* moving floodlight sweep */
+.login-page__sweep {
+  position: absolute;
+  inset: 0;
+  width: 42%;
+  pointer-events: none;
+  background: linear-gradient(
+    100deg,
+    transparent,
+    rgba(255, 255, 255, 0.22) 42%,
+    rgba(232, 121, 249, 0.18) 52%,
+    rgba(196, 140, 255, 0.14) 60%,
+    transparent
+  );
+  transform: translateX(-140%) skewX(-12deg);
+  animation: sweep 7s ease-in-out infinite;
+}
+
+@keyframes sweep {
+  0% {
+    transform: translateX(-140%) skewX(-12deg);
+    opacity: 0;
+  }
+  12% {
+    opacity: 0.9;
+  }
+  50% {
+    opacity: 0.35;
+  }
+  88% {
+    opacity: 0.9;
+  }
+  100% {
+    transform: translateX(140%) skewX(-12deg);
+    opacity: 0;
+  }
+}
+
+/* rotating stage-light beams from the roof arc */
+.login-page__beams {
+  position: absolute;
+  top: -6%;
+  left: 50%;
+  width: 1px;
+  height: 0;
+  pointer-events: none;
+  mix-blend-mode: screen;
+}
+
+.login-page__beam {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 160px;
+  height: 72vh;
+  margin-left: -80px;
+  background: linear-gradient(to bottom, var(--beam-color), transparent 75%);
+  transform-origin: top center;
+  transform: rotate(var(--beam-rotate)) scaleY(0.92);
+  filter: blur(8px);
+  opacity: 0;
+  animation: beamSway 6.5s ease-in-out infinite;
+}
+
+@keyframes beamSway {
+  0%,
+  100% {
+    opacity: 0;
+    transform: rotate(var(--beam-rotate)) scaleY(0.88);
+  }
+  18% {
+    opacity: 0.85;
+  }
+  50% {
+    opacity: 0.5;
+    transform: rotate(calc(var(--beam-rotate) + 5deg)) scaleY(1);
+  }
+  82% {
+    opacity: 0.75;
+  }
+}
+
+/* LED rig welded to the roof rim, traced from the photo.
+   The SVG shares the background image's aspect ratio and uses
+   preserveAspectRatio="slice", so it crops identically to
+   object-fit: cover and stays aligned at every viewport size. */
+.login-page__rig {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  mix-blend-mode: screen;
+}
+
+.rig-halo {
+  fill: none;
+  stroke: url(#rigGradient);
+  stroke-width: 11;
+  filter: url(#rigGlow);
+  opacity: 0.45;
+  animation: rigPulse 3.4s ease-in-out infinite;
+}
+
+.rig-bulbs {
+  fill: none;
+  stroke: url(#rigGradient);
+  stroke-width: 5;
+  stroke-linecap: round;
+  stroke-dasharray: 0.5 15;
+  animation:
+    rigChase 2.8s linear infinite,
+    rigPulse 3.4s ease-in-out infinite;
+}
+
+@keyframes rigChase {
+  to {
+    stroke-dashoffset: -31;
+  }
+}
+
+@keyframes rigPulse {
+  0%,
+  100% {
+    opacity: 0.55;
+  }
+  42% {
+    opacity: 1;
+  }
+  52% {
+    opacity: 0.65;
+  }
+  62% {
+    opacity: 0.95;
+  }
+}
+
+/* camera-flash flickers in the crowd */
+.login-page__flash {
+  position: absolute;
+  border-radius: 50%;
+  background: #fff;
+  box-shadow: 0 0 12px 4px rgba(255, 255, 255, 0.95);
+  opacity: 0;
+  pointer-events: none;
+  animation: flicker 2.8s ease-in-out infinite;
+}
+
+@keyframes flicker {
+  0%,
+  88%,
+  100% {
+    opacity: 0;
+  }
+  91% {
+    opacity: 1;
+  }
+  93% {
+    opacity: 0.2;
+  }
+  95% {
+    opacity: 1;
+  }
+  97% {
+    opacity: 0;
+  }
+}
+
+@keyframes brandGlow {
+  0%,
+  100% {
+    box-shadow: 0 0 18px rgba(168, 85, 247, 0.55);
+  }
+  50% {
+    box-shadow: 0 0 30px rgba(232, 121, 249, 0.8);
+  }
+}
+
+.login-page__brand-mark {
+  animation: brandGlow 3s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .login-page__sweep,
+  .login-page__flash,
+  .login-page__beam {
+    animation: none;
+    opacity: 0;
+  }
+
+  /* keep the rig lit, just hold it steady */
+  .rig-halo,
+  .rig-bulbs {
+    animation: none;
+  }
+
+  .login-page__brand-mark {
+    animation: none;
+    box-shadow: 0 0 18px rgba(168, 85, 247, 0.55);
+  }
+}
+
+/* header */
+.login-page__header {
+  position: relative;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 24px 32px;
+}
+
+.login-page__brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.login-page__brand-mark {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 9px;
+  background: linear-gradient(135deg, #7c3aed, #a855f7);
+  box-shadow: 0 0 18px rgba(168, 85, 247, 0.55);
+}
+
+.login-page__brand-mark svg {
+  width: 18px;
+  height: 18px;
+  color: #fff;
+}
+
+.login-page__brand-name {
+  font-family: "Oswald", sans-serif;
+  font-size: 17px;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.75);
+}
+
+.login-page__brand-name span {
+  font-weight: 700;
+  color: #fff;
+  background: linear-gradient(90deg, #d8b4fe, #f0abfc);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  margin-left: 1px;
+}
+
+.login-page__powered {
+  font-family: "Inter", sans-serif;
+  font-size: 10px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.35);
+}
+
+/* main content */
+.login-page__main {
+  position: relative;
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: calc(100vh - 88px);
+  padding: 16px 16px 40px;
+  text-align: center;
+}
+
+.login-page__headline {
+  max-width: 700px;
+  font-family: "Oswald", sans-serif;
+  font-size: 44px;
+  font-weight: 600;
+  line-height: 1.08;
+  letter-spacing: 0.01em;
+  text-transform: uppercase;
+  color: #fff;
+  margin: 0;
+}
+
+.login-page__headline span {
+  color: #c084fc;
+}
+
+.login-page__tagline {
+  max-width: 420px;
+  margin: 16px 0 0;
+  font-family: "Inter", sans-serif;
+  font-size: 13.5px;
+  line-height: 1.6;
+  color: rgba(255, 255, 255, 0.55);
+}
+
+/* card */
+.login-card {
+  margin-top: 30px;
+  width: 100%;
+  max-width: 380px;
+  text-align: left;
+  padding: 32px;
+  border-radius: 18px;
+  background: rgba(8, 4, 14, 0.62);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  box-shadow:
+    0 25px 60px -15px rgba(88, 28, 135, 0.5),
+    0 0 0 1px rgba(255, 255, 255, 0.03);
+}
+
+.login-card__title {
+  margin: 0;
+  font-family: "Oswald", sans-serif;
+  font-size: 20px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+  color: #fff;
+}
+
+.login-card__subtitle {
+  margin: 6px 0 0;
+  font-family: "Inter", sans-serif;
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.55);
+}
+
+.login-card__google-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  width: 100%;
+  margin-top: 24px;
+  padding: 13px 16px;
+  font-family: "Inter", sans-serif;
+  font-size: 13.5px;
+  font-weight: 500;
+  color: #fff;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 10px;
+  cursor: pointer;
+  transition: background 0.15s ease;
+}
+
+.login-card__google-btn:hover:not(:disabled) {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.login-card__google-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.login-card__divider {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 20px 0;
+}
+
+.login-card__divider-line {
+  flex: 1;
+  height: 1px;
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.login-card__divider-text {
+  font-family: "Inter", sans-serif;
+  font-size: 10px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.3);
+}
+
+.login-card__field-label {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 6px;
+  font-family: "Inter", sans-serif;
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.4);
+}
+
+.login-card__forgot-link {
+  font-family: "Inter", sans-serif;
+  font-size: 11px;
+  text-transform: none;
+  letter-spacing: 0;
+  color: #a855f7;
+  text-decoration: none;
+}
+
+.login-card__forgot-link:hover {
+  text-decoration: underline;
+}
+
+.login-card__input {
+  width: 100%;
+  margin-bottom: 16px;
+  padding: 11px 13px;
+  font-family: "Inter", sans-serif;
+  font-size: 13.5px;
+  color: #fff;
+  background: rgba(0, 0, 0, 0.4);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 9px;
+  outline: none;
+}
+
+.login-card__input::placeholder {
+  color: rgba(255, 255, 255, 0.3);
+}
+
+.login-card__input:focus {
+  border-color: #a855f7;
+}
+
+.login-card__submit-btn {
+  width: 100%;
+  min-width: 100%;
+  padding: 13px 16px;
+  font-family: "Inter", sans-serif;
+  font-size: 13.5px;
+  font-weight: 700;
+  color: #fff;
+  background: #7c3aed;
+  border: none;
+  border-radius: 9px;
+  cursor: pointer;
+  transition: background 0.15s ease;
+}
+
+.login-card__submit-btn:hover:not(:disabled) {
+  background: #6d28d9;
+}
+
+.login-card__submit-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.login-card__error {
+  min-height: 16px;
+  margin-top: 12px;
+  text-align: center;
+  font-family: "Inter", sans-serif;
+  font-size: 12px;
+  color: #f87171;
+  opacity: 0;
+  transition: opacity 0.15s ease;
+}
+
+.login-card__error--visible {
+  opacity: 1;
+}
+
+.login-card__legal {
+  margin-top: 20px;
+  text-align: center;
+  font-family: "Inter", sans-serif;
+  font-size: 10.5px;
+  color: rgba(255, 255, 255, 0.35);
+}
+
+.login-card__legal a {
+  color: #a855f7;
+  text-decoration: none;
+}
+
+.login-card__legal a:hover {
+  text-decoration: underline;
+}

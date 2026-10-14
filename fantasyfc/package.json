@@ -1,41 +1,59 @@
 {
-  "name": "fantasyfc-portfolio",
+  "name": "cuneiform-rw344-project",
   "private": true,
-  "version": "1.0.0",
+  "version": "0.0.0",
   "type": "module",
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",
     "lint": "eslint .",
     "preview": "vite preview",
-    "test": "vitest run"
+    "test": "vitest run",
+    "poc:fpl-stats": "node scripts/s2-08a-poc-fpl-stats.ts",
+    "ingest:players": "node scripts/s2-06-ingest-players.js",
+    "seed:leagues": "node --env-file=.env.seed scripts/seed-leagues.ts",
+    "seed:leagues:teardown": "node --env-file=.env.seed scripts/seed-leagues.ts --teardown",
+    "ingest:fixtures": "node scripts/s2-07-ingest-fixtures.ts",
+    "seed:demo-live": "node scripts/s2-07-seed-demo-live.ts",
+    "ingest:gameweek-stats": "node scripts/s2-08b-ingest-gameweek-stats.ts",
+    "ingest:espn-leagues": "node scripts/s3-45-ingest-espn-leagues.ts",
+    "ingest:league-fixtures": "node scripts/s3-44-ingest-fixtures.ts",
+    "ingest:league-stats": "node scripts/s3-44-ingest-api-football-stats.ts",
+    "ingest:espn-stats": "node scripts/s3-45-ingest-espn-stats.ts",
+    "price:players": "node scripts/s3-36-price-players.ts"
   },
   "dependencies": {
+    "@react-three/fiber": "^9.8.1",
+    "@supabase/supabase-js": "^2.112.3",
+    "d3-geo": "^3.1.1",
+    "emoji-picker-react": "^4.22.2",
     "react": "^19.2.8",
     "react-dom": "^19.2.8",
-    "react-router-dom": "^7.18.2"
+    "react-router-dom": "^7.18.2",
+    "three": "^0.185.1",
+    "topojson-client": "^3.1.0",
+    "world-atlas": "^2.0.2"
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",
-    "@testing-library/dom": "^10.4.2",
     "@testing-library/jest-dom": "^6.9.1",
     "@testing-library/react": "^16.3.3",
+    "@types/d3-geo": "^3.1.1",
     "@types/node": "^24.13.3",
     "@types/react": "^19.2.17",
     "@types/react-dom": "^19.2.3",
+    "@types/three": "^0.185.4",
+    "@types/topojson-client": "^3.1.5",
     "@vitejs/plugin-react": "^6.0.4",
     "eslint": "^10.8.0",
     "eslint-plugin-react-hooks": "^7.1.1",
     "eslint-plugin-react-refresh": "^0.5.3",
     "globals": "^17.7.0",
     "jsdom": "^29.1.1",
+    "supabase": "^2.114.0",
     "typescript": "~6.0.2",
     "typescript-eslint": "^8.65.0",
     "vite": "^8.2.0",
     "vitest": "^4.1.11"
-  },
-  "description": "FantasyFC portfolio demo: Erin Painting's front-end and scoring-engine work from a 5-person fantasy football app built for Entelect.",
-  "engines": {
-    "node": ">=20.19"
   }
 }

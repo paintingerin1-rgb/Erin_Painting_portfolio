@@ -1,0 +1,604 @@
+/* SquadPage.css */
+
+@import url("https://fonts.googleapis.com/css2?family=Oswald:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap");
+
+.squad-page {
+  position: relative;
+  display: flex;
+  min-height: 100vh;
+  /*  background: #14121b;*/
+  font-family: "Inter", sans-serif;
+}
+
+.squad-page__main {
+  flex: 1;
+  padding: 20px 32px 20px;
+  min-width: 0;
+}
+
+.squad-page__header {
+  margin-bottom: 16px;
+}
+
+.squad-page__eyebrow {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #cbbcec;
+  margin: 0 0 4px;
+}
+
+.squad-page__title {
+  font-family: "Oswald", sans-serif;
+  font-size: 24px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+  color: #fff;
+  margin: 0;
+}
+
+.squad-page__demo-toggle {
+  margin-bottom: 16px;
+  padding: 6px 12px;
+  font-size: 11px;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.6);
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px dashed rgba(255, 255, 255, 0.2);
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+/* ===== stat cards — reuses the shared StatCard component's classes ===== */
+.squad-page__stats {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 16px;
+  margin-bottom: 20px;
+}
+
+/* ===== body layout (#35) =====
+   Team strip on top, pitch, then the bench in one row underneath. The pitch
+   takes whatever height is left, so the page fits a 1080p laptop screen
+   without scrolling. */
+.squad-page__body {
+  --squad-chrome: 330px; /* header + team strip + bench + gaps and padding */
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  width: 100%;
+}
+
+.squad-team-strip {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  padding: 14px 20px;
+  border-radius: 12px;
+  background: rgba(32, 30, 38, 0.68);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+.squad-team-strip__stats {
+  display: flex;
+  gap: 40px;
+  margin: 0;
+  min-width: 0;
+}
+
+.squad-team-strip__stat {
+  min-width: 0;
+}
+
+.squad-team-strip__stat dt {
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.5);
+  margin-bottom: 2px;
+}
+
+.squad-team-strip__stat dd {
+  margin: 0;
+  font-family: "Oswald", sans-serif;
+  font-size: 18px;
+  font-weight: 700;
+  color: #fff;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.squad-team-strip .squad-draft-btn {
+  flex: none;
+  margin-top: 0;
+  padding: 12px 24px;
+  font-size: 16px;
+}
+
+.squad-bench {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  padding: 12px 20px;
+  border-radius: 12px;
+  background: rgba(32, 30, 38, 0.68);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.squad-bench__title {
+  font-size: 10.5px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.6);
+  margin: 0;
+}
+
+.squad-bench .bench-list {
+  display: flex;
+  gap: 14px;
+}
+
+.pitch-panel {
+  background: #0d0a14;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.pitch-wrap {
+  position: relative;
+  /* As wide as the column allows, but never taller than the space left. */
+  width: min(100%, calc((100vh - var(--squad-chrome, 330px)) * 1706 / 922));
+  margin-inline: auto;
+  aspect-ratio: 1706 / 922;
+  background-image: url("../../assets/squad-pitch-aerial.png");
+  background-size: cover;
+  background-position: center;
+}
+
+.formation-layer {
+  position: absolute;
+  top: 9%;
+  bottom: 6.8%;
+  left: 30.8%;
+  right: 30.9%;
+}
+
+.card-slot {
+  /* Scale up all pitch cards by 1.4x so they are easier to see! */
+  transform: translate(-50%, -50%) scale(1.4);
+  cursor: pointer;
+  transition:
+    transform 0.2s,
+    box-shadow 0.2s,
+    filter 0.2s;
+  border-radius: 8px;
+}
+
+.bench-strip {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 14px 18px;
+  border-top: 1px solid rgba(255, 255, 255, 0.09);
+  background: rgba(255, 255, 255, 0.02);
+}
+
+.bench-strip__label {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.4);
+  margin-right: 4px;
+}
+
+/* ===== side column ===== */
+.squad-page__side {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.side-panel {
+  padding: 16px 18px;
+  border-radius: 12px;
+  background: rgba(32, 30, 38, 0.68);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+.side-panel--accent {
+  background: linear-gradient(160deg, #6d4fa8, #8b6dc7);
+  border-color: transparent;
+}
+
+.side-panel__title {
+  font-size: 10.5px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.6);
+  margin: 0 0 12px;
+}
+
+.side-panel--accent .side-panel__title {
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.position-key {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.position-key__item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 12px;
+  color: #fff;
+}
+
+.position-key__row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.position-key__dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.position-key__count {
+  font-size: 11px;
+  color: rgba(255, 255, 255, 0.45);
+}
+
+.side-panel__big {
+  font-family: "Oswald", sans-serif;
+  font-size: 30px;
+  font-weight: 700;
+  color: #fff;
+  margin: 0;
+}
+
+.side-panel__big-of {
+  font-size: 14px;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.4);
+}
+
+.side-panel__caption {
+  font-size: 11px;
+  color: rgba(255, 255, 255, 0.7);
+  margin: 4px 0 14px;
+}
+
+.side-panel__cta {
+  width: 100%;
+  padding: 10px;
+  font-family: "Inter", sans-serif;
+  font-size: 12.5px;
+  font-weight: 700;
+  color: #6d4fa8;
+  background: #fff;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.side-panel__cta:hover {
+  background: #f3f0fa;
+}
+
+.side-panel__deadline {
+  font-family: "Oswald", sans-serif;
+  font-size: 18px;
+  font-weight: 700;
+  color: #fff;
+  margin: 0;
+}
+
+/* ===== budget panel ===== */
+.budget-bar {
+  height: 6px;
+  border-radius: 4px;
+  background: rgba(255, 255, 255, 0.08);
+  overflow: hidden;
+  margin: 10px 0 8px;
+}
+
+.budget-bar__fill {
+  height: 100%;
+  background: linear-gradient(90deg, #6d4fa8, #8b6dc7);
+  border-radius: 4px;
+}
+
+/* ===== empty state ===== */
+.squad-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 80px 24px;
+  border-radius: 12px;
+  background: rgba(32, 30, 38, 0.68);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+.squad-empty__icon {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: rgba(139, 109, 199, 0.18);
+  border: 1px solid rgba(139, 109, 199, 0.4);
+  color: #c7b6e8;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 18px;
+}
+
+.squad-empty__icon svg {
+  width: 28px;
+  height: 28px;
+}
+
+.squad-empty__title {
+  font-family: "Oswald", sans-serif;
+  font-size: 18px;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: #fff;
+  margin: 0 0 10px;
+}
+
+.squad-empty__body {
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.55);
+  max-width: 380px;
+  line-height: 1.6;
+  margin: 0 0 24px;
+}
+
+.squad-empty__cta {
+  padding: 12px 28px;
+  font-family: "Inter", sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+  color: #fff;
+  background: linear-gradient(135deg, #6d4fa8, #8b6dc7);
+  border: none;
+  border-radius: 9px;
+  cursor: pointer;
+}
+
+@media (max-width: 1080px) {
+  .squad-page__stats {
+    grid-template-columns: 1fr;
+  }
+  .squad-team-strip {
+    flex-wrap: wrap;
+  }
+  .squad-team-strip__stats {
+    gap: 24px;
+  }
+}
+
+.squad-empty__icon--live {
+  background: rgba(74, 222, 128, 0.18);
+  border-color: rgba(74, 222, 128, 0.4);
+  color: #4ade80;
+  animation: live-pulse 1.6s ease-in-out infinite;
+}
+
+@keyframes live-pulse {
+  0%,
+  100% {
+    box-shadow: 0 0 0 0 rgba(74, 222, 128, 0.4);
+  }
+  50% {
+    box-shadow: 0 0 0 6px rgba(74, 222, 128, 0);
+  }
+}
+
+/* ----------------------------------------- */
+/* Swap Interaction & Blank Cards            */
+/* ----------------------------------------- */
+.card-slot {
+  transform: translate(
+    -50%,
+    -50%
+  ); /* Centers the card exactly on its coordinate */
+  cursor: pointer;
+  transition:
+    transform 0.2s,
+    box-shadow 0.2s,
+    filter 0.2s;
+  border-radius: 8px;
+}
+.bench-slot {
+  position: relative;
+  cursor: pointer;
+  transition:
+    transform 0.2s,
+    box-shadow 0.2s,
+    filter 0.2s;
+  border-radius: 8px;
+}
+/* Hover effects */
+.card-slot:hover,
+.bench-slot:hover {
+  filter: brightness(1.2);
+}
+/* Selected state (Glow & Expand) */
+.card-slot--selected {
+  box-shadow:
+    0 0 0 3px #8b6dc7,
+    0 0 20px rgba(139, 109, 199, 0.6);
+  transform: scale(1.1) translate(-45%, -45%); /* Keep centered while scaled */
+  z-index: 100;
+}
+.bench-slot--selected {
+  box-shadow:
+    0 0 0 3px #8b6dc7,
+    0 0 20px rgba(139, 109, 199, 0.6);
+  transform: scale(1.05);
+}
+/* Blank card styling for empty positions */
+/* Blank card perfectly matches PlayerCard dimensions (62x78) */
+.blank-card {
+  width: 62px;
+  height: 78px;
+  background: rgba(0, 0, 0, 0.4);
+  border: 1px dashed rgba(255, 255, 255, 0.3);
+  border-radius: 10px 10px 6px 6px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: rgba(255, 255, 255, 0.4);
+  font-size: 16px;
+  backdrop-filter: blur(4px);
+}
+.blank-card span {
+  font-size: 8px;
+  text-transform: uppercase;
+  margin-top: 4px;
+  letter-spacing: 0.05em;
+}
+/* ----------------------------------------- */
+/* Draft Button                              */
+/* ----------------------------------------- */
+.squad-draft-btn {
+  background: linear-gradient(135deg, #6d4fa8, #8b6dc7);
+  color: white;
+  border: none;
+  padding: 16px 32px;
+  border-radius: 12px;
+  font-weight: 700;
+  font-size: 18px;
+  cursor: pointer;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+  margin-top: 24px;
+  display: inline-block;
+  text-decoration: none;
+  transition:
+    transform 0.2s,
+    box-shadow 0.2s;
+}
+.squad-draft-btn:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 24px rgba(109, 79, 168, 0.4);
+}
+
+/* ----------------------------------------- */
+/* Modal Overlay                             */
+/* ----------------------------------------- */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(8px);
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.modal-content {
+  background: rgba(32, 30, 38, 0.95);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 32px;
+  border-radius: 16px;
+  width: 400px;
+  max-width: 90%;
+  box-shadow: 0 24px 48px rgba(0, 0, 0, 0.4);
+}
+
+.modal-btn {
+  padding: 12px 24px;
+  border-radius: 8px;
+  font-family: "Inter", sans-serif;
+  font-weight: 700;
+  cursor: pointer;
+  border: none;
+  transition:
+    transform 0.1s,
+    box-shadow 0.2s;
+}
+.modal-btn:hover {
+  transform: translateY(-2px);
+}
+
+.modal-btn--cancel {
+  background: transparent;
+  color: white;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.modal-btn--confirm {
+  background: linear-gradient(135deg, #4ade80, #16a34a);
+  color: white;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+}
+
+/* ----------------------------------------- */
+/* Lineup: captain, lock (#17)               */
+/* ----------------------------------------- */
+.squad-page__locked {
+  margin: 8px 0 0;
+  padding: 8px 12px;
+  border-radius: 8px;
+  background: rgba(251, 191, 36, 0.12);
+  border: 1px solid rgba(251, 191, 36, 0.35);
+  color: #fbbf24;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.bench-slot {
+  position: relative;
+}
+
+.captain-badge {
+  position: absolute;
+  top: -6px;
+  right: -6px;
+  z-index: 2;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  background: #fbbf24;
+  color: #1a1a1a;
+  font-family: "Oswald", sans-serif;
+  font-size: 12px;
+  font-weight: 700;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.4);
+}
+
+.card-slot--locked,
+.bench-slot--locked {
+  cursor: not-allowed;
+  filter: saturate(0.6);
+}

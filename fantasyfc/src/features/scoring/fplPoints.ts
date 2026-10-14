@@ -1,14 +1,10 @@
-// Official Fantasy Premier League scoring, as a pure function.
+// TypeScript mirror of the fpl_points() SQL function in the S2-08b
+// migration. Keep the two in lock-step - fplPoints.test.ts cross-checks
+// both against real published FPL scores.
 //
-// In the production app the same rules exist twice: as the fpl_points() SQL
-// function that powers the real league standings, and as this TypeScript
-// mirror. Two independent implementations of one spec act as a check on
-// each other - comparing them is how a clean-sheet bug at the 60-minute
-// boundary was caught. Both are validated against real players' published
-// FPL scores (see fplPoints.test.ts).
-//
-// Points are never stored. They're derived from raw match stats every time,
-// so a rule change never needs a data fix.
+// football_players.position stores the full words 'Goalkeeper' / 'Defender'
+// / 'Midfielder' / 'Forward' (see DraftPage.tsx POSITION_LIMITS), not the
+// FPL API's short codes.
 
 export type Position = "Goalkeeper" | "Defender" | "Midfielder" | "Forward";
 
@@ -24,20 +20,11 @@ export interface GameweekStats {
   yellowCards: number;
   redCards: number;
   saves: number;
-  /** Null when the data provider doesn't supply it - scores 0, not an error. */
-  bonus: number | null;
-  /** Null when the data provider doesn't supply it - scores 0, not an error. */
-  defensiveContribution: number | null;
+  bonus: number;
+  defensiveContribution: number;
 }
 
-export interface PointsLine {
-  label: string;
-  points: number;
-}
-
-// Position-dependent values live in lookup tables, so each line here maps
-// to exactly one row of the official scoring table.
-const GOAL_POINTS: Record<Position, number> = {
+const GOALS_SCORED_POINTS: Record<Position, number> = {
   Goalkeeper: 10,
   Defender: 6,
   Midfielder: 5,
@@ -51,66 +38,56 @@ const CLEAN_SHEET_POINTS: Record<Position, number> = {
   Forward: 0,
 };
 
-// Goalkeepers have no entry: they never score this category.
 const DEFENSIVE_CONTRIBUTION_THRESHOLD: Partial<Record<Position, number>> = {
-  Defender: 10, // clearances, blocks, interceptions, tackles
-  Midfielder: 12, // ...plus recoveries
+  Defender: 10,
+  Midfielder: 12,
   Forward: 12,
 };
 
-/**
- * Every rule that scored for this stat line, with its points. Rules that
- * contributed 0 are left out. fplPoints() is just the sum of these, so the
- * breakdown shown in the UI can never disagree with the total.
- */
-export function fplBreakdown(stats: GameweekStats, position: Position): PointsLine[] {
-  const lines: PointsLine[] = [];
-  const add = (label: string, points: number) => {
-    if (points !== 0) lines.push({ label, points });
-  };
-
-  // Appearance: 1 for playing at all, 2 for 60 minutes or more.
-  add(
-    stats.minutes >= 60 ? "Played 60+ minutes" : "Played under 60 minutes",
-    stats.minutes >= 60 ? 2 : stats.minutes > 0 ? 1 : 0,
-  );
-
-  add(`Goals (${stats.goalsScored})`, stats.goalsScored * GOAL_POINTS[position]);
-  add(`Assists (${stats.assists})`, stats.assists * 3);
-
-  // A clean sheet only counts with 60+ minutes played.
-  if (stats.minutes >= 60 && stats.cleanSheets > 0) {
-    add("Clean sheet", CLEAN_SHEET_POINTS[position]);
-  }
-
-  // 1 point per 3 saves, no partial credit.
-  add(`Saves (${stats.saves})`, Math.floor(stats.saves / 3));
-
-  add("Penalty saved", stats.penaltiesSaved * 5);
-  add("Penalty missed", stats.penaltiesMissed * -2);
-
-  // -1 per 2 goals conceded, goalkeepers and defenders only.
-  if (position === "Goalkeeper" || position === "Defender") {
-    add(`Goals conceded (${stats.goalsConceded})`, -Math.floor(stats.goalsConceded / 2));
-  }
-
-  add("Yellow card", stats.yellowCards * -1);
-  add("Red card", stats.redCards * -3);
-  add("Own goal", stats.ownGoals * -2);
-
-  // Flat +2 once the threshold is reached - not per 10 or per 12.
-  const threshold = DEFENSIVE_CONTRIBUTION_THRESHOLD[position];
-  if (threshold !== undefined && (stats.defensiveContribution ?? 0) >= threshold) {
-    add("Defensive contribution", 2);
-  }
-
-  // Bonus arrives already decided (3/2/1) from the feed.
-  add("Bonus", stats.bonus ?? 0);
-
-  return lines;
-}
-
-/** A player's FPL points for one gameweek. */
 export function fplPoints(stats: GameweekStats, position: Position): number {
-  return fplBreakdown(stats, position).reduce((sum, line) => sum + line.points, 0);
+  let points = 0;
+
+  // Appearance
+  points += stats.minutes >= 60 ? 2 : stats.minutes > 0 ? 1 : 0;
+
+  // Goals
+  points += stats.goalsScored * GOALS_SCORED_POINTS[position];
+
+  // Assists
+  points += stats.assists * 3;
+
+  // Clean sheet - only counts with 60+ minutes played
+  if (stats.minutes >= 60 && stats.cleanSheets > 0) {
+    points += CLEAN_SHEET_POINTS[position];
+  }
+
+  // Every 3 saves: 1 pt
+  points += Math.floor(stats.saves / 3);
+
+  // Penalties
+  points += stats.penaltiesSaved * 5;
+  points -= stats.penaltiesMissed * 2;
+
+  // Every 2 goals conceded: -1 pt, GK/DEF only
+  if (position === "Goalkeeper" || position === "Defender") {
+    points -= Math.floor(stats.goalsConceded / 2);
+  }
+
+  // Cards
+  points -= stats.yellowCards * 1;
+  points -= stats.redCards * 3;
+
+  // Own goals
+  points -= stats.ownGoals * 2;
+
+  // Defensive contribution: +2, DEF at 10+ CBIT, MID/FWD at 12+ CBIRT, not GK
+  const threshold = DEFENSIVE_CONTRIBUTION_THRESHOLD[position];
+  if (threshold !== undefined && stats.defensiveContribution >= threshold) {
+    points += 2;
+  }
+
+  // Bonus, straight from the feed (already computed from BPS)
+  points += stats.bonus;
+
+  return points;
 }

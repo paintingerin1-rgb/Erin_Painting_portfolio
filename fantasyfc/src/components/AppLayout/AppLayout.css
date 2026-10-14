@@ -1,0 +1,16 @@
+/* AppLayout.css - the shared chrome every signed-in page renders inside. */
+
+@import url("https://fonts.googleapis.com/css2?family=Oswald:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap");
+
+.app-shell {
+  position: relative;
+  z-index: 10;
+  display: flex;
+  min-height: 100vh;
+  font-family: "Inter", sans-serif;
+}
+
+.app-shell__main {
+  flex: 1;
+  min-width: 0;
+}

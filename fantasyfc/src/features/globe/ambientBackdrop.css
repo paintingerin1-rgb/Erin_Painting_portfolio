@@ -1,0 +1,108 @@
+/*
+  Sits between the dotted ground and the globe canvas. Everything here is
+  decorative and must never intercept a pointer — the globe owns dragging.
+*/
+.globe-ambient {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.globe-ambient-layer {
+  position: absolute;
+  inset: 0;
+  /* How hot the wash burns. The app's dark ground needs this much to read at all. */
+  --aura: 0.66;
+}
+
+.globe-ambient-layer[data-enter] {
+  animation: globe-ambient-in 900ms ease forwards;
+}
+
+@keyframes globe-ambient-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.globe-ambient-layer > * {
+  position: absolute;
+  inset: 0;
+}
+
+/* Light pooled below the globe, like a floodlit pitch. */
+.globe-ambient-floor {
+  background: radial-gradient(
+    ellipse 120% 62% at 50% 116%,
+    color-mix(in srgb, var(--accent) calc(var(--aura) * 100%), transparent),
+    transparent 72%
+  );
+  animation: globe-ambient-swell 46s ease-in-out infinite alternate;
+}
+
+/* Faint counter-light above, so the top edge isn't a hard cut. */
+.globe-ambient-rim {
+  background: radial-gradient(
+    ellipse 90% 46% at 50% -14%,
+    color-mix(in srgb, var(--accent-2) calc(var(--aura) * 46%), transparent),
+    transparent 70%
+  );
+  animation: globe-ambient-swell 58s ease-in-out infinite alternate-reverse;
+}
+
+/* One slow field in the upper corner — the horizon wash alone leaves it dead. */
+.globe-ambient-drift {
+  background: radial-gradient(
+    closest-side circle at 18% 24%,
+    color-mix(in srgb, var(--accent-2) calc(var(--aura) * 40%), transparent),
+    transparent 100%
+  );
+  animation: globe-ambient-drift 74s ease-in-out infinite alternate;
+}
+
+@keyframes globe-ambient-swell {
+  from { transform: translateY(2%) scaleY(0.96); }
+  to { transform: translateY(-3%) scaleY(1.08); }
+}
+
+@keyframes globe-ambient-drift {
+  from { transform: translate3d(-4%, -3%, 0) scale(1.04); }
+  to { transform: translate3d(7%, 5%, 0) scale(1.2); }
+}
+
+/*
+  Corner mark, bottom-left, cropped by the frame edge.
+
+  Masked to a silhouette and filled with the league's own colour rather than
+  drawn in full colour: four of the seven marks are near-black and would sink
+  into the dark ground, and a full-colour logo at watermark opacity reads as
+  muddy rather than quiet.
+*/
+.globe-ambient-crest {
+  /*
+    Sat inside the corner rather than bled off it. Several marks are wordmarks,
+    and cropping those mid-letter reads as a rendering fault, not a watermark.
+  */
+  inset: auto auto 4% 3.5%;
+  /* Base box, then each mark's own correction — see League.crestScale. */
+  width: calc(min(26vw, 26vh) * var(--crest-scale, 1));
+  aspect-ratio: 1;
+  background-color: var(--accent);
+  opacity: 0.2;
+  -webkit-mask-image: var(--crest);
+  mask-image: var(--crest);
+  -webkit-mask-size: contain;
+  mask-size: contain;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+  -webkit-mask-position: bottom left;
+  mask-position: bottom left;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .globe-ambient-layer,
+  .globe-ambient-layer > * {
+    animation: none;
+  }
+}

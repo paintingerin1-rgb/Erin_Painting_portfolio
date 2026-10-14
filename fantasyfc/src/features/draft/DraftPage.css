@@ -1,0 +1,565 @@
+@import url("https://fonts.googleapis.com/css2?family=Oswald:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap");
+
+.draft-page {
+  position: relative;
+  display: flex;
+  min-height: 100vh;
+  /*  background: #14121b;*/
+  font-family: "Inter", sans-serif;
+}
+
+.draft-page__main {
+  flex: 1;
+  padding: 24px 32px 40px;
+  min-width: 0;
+  max-width: 1650px;
+}
+
+.draft-page__header {
+  margin-bottom: 18px;
+}
+
+.draft-page__eyebrow {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #cbbcec;
+  margin: 0 0 4px;
+}
+
+.draft-page__title {
+  font-family: "Oswald", sans-serif;
+  font-size: 22px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+  color: #fff;
+  margin: 0 0 20px;
+}
+
+.draft-tabs {
+  display: flex;
+  gap: 4px;
+  padding: 4px;
+  margin-bottom: 20px;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  /* Full width with the tabs sharing it; they wrap onto a second row when the
+     card is too narrow instead of spilling out of it. */
+  width: 100%;
+  flex-wrap: wrap;
+}
+
+.draft-tab {
+  flex: 1;
+  padding: 9px 12px;
+  font-family: "Inter", sans-serif;
+  font-size: 12.5px;
+  font-weight: 700;
+  color: rgba(255, 255, 255, 0.55);
+  background: none;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.draft-tab--active {
+  color: #fff;
+  background: linear-gradient(135deg, #6d4fa8, #8b6dc7);
+}
+
+.league-card {
+  width: 100%;
+  padding: 24px;
+  border-radius: 12px;
+  background: rgba(32, 30, 38, 0.68);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+.league-card__heading {
+  font-family: "Oswald", sans-serif;
+  font-size: 22px;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: #fff;
+  margin: 0 0 22px;
+}
+
+.league-card__heading span {
+  color: #c7b6e8;
+  display: block;
+}
+
+.league-field {
+  display: block;
+  margin-bottom: 22px;
+}
+
+.league-field__label {
+  display: flex;
+  justify-content: space-between;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.55);
+  margin-bottom: 8px;
+}
+
+.league-field__value {
+  color: #c7b6e8;
+  font-family: "Oswald", sans-serif;
+  font-size: 13px;
+}
+
+.league-field__input {
+  width: 100%;
+  padding: 12px 14px;
+  font-family: "Inter", sans-serif;
+  font-size: 13.5px;
+  color: #fff;
+  background: rgba(0, 0, 0, 0.35);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 9px;
+  outline: none;
+}
+
+.league-field__input::placeholder {
+  color: rgba(255, 255, 255, 0.35);
+}
+
+.league-field__input:focus {
+  border-color: #8b6dc7;
+}
+
+.league-slider {
+  width: 100%;
+  height: 4px;
+  border-radius: 4px;
+  background: rgba(255, 255, 255, 0.12);
+  appearance: none;
+  outline: none;
+}
+
+.league-slider::-webkit-slider-thumb {
+  appearance: none;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #6d4fa8, #8b6dc7);
+  box-shadow: 0 0 0 3px rgba(139, 109, 199, 0.25);
+  cursor: pointer;
+}
+
+.league-slider::-moz-range-thumb {
+  width: 18px;
+  height: 18px;
+  border: none;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #6d4fa8, #8b6dc7);
+  box-shadow: 0 0 0 3px rgba(139, 109, 199, 0.25);
+  cursor: pointer;
+}
+
+.league-slider__ends {
+  display: flex;
+  justify-content: space-between;
+  font-size: 10.5px;
+  color: rgba(255, 255, 255, 0.35);
+  margin-top: 6px;
+}
+
+.segmented {
+  display: flex;
+  gap: 4px;
+  padding: 4px;
+  border-radius: 9px;
+  background: rgba(0, 0, 0, 0.3);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.segmented__option {
+  flex: 1;
+  padding: 10px;
+  font-family: "Inter", sans-serif;
+  font-size: 12.5px;
+  font-weight: 700;
+  color: rgba(255, 255, 255, 0.55);
+  background: none;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.segmented__option--active {
+  color: #fff;
+  background: linear-gradient(135deg, #6d4fa8, #8b6dc7);
+}
+
+.privacy-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  padding: 14px;
+  border-radius: 9px;
+  background: rgba(0, 0, 0, 0.25);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.privacy-row__title {
+  font-size: 13px;
+  font-weight: 700;
+  color: #fff;
+  margin: 0 0 3px;
+}
+
+.privacy-row__caption {
+  font-size: 11px;
+  color: rgba(255, 255, 255, 0.45);
+  margin: 0;
+  max-width: 260px;
+  line-height: 1.4;
+}
+
+.toggle-switch {
+  position: relative;
+  width: 42px;
+  height: 24px;
+  flex-shrink: 0;
+  border-radius: 20px;
+  border: none;
+  background: rgba(255, 255, 255, 0.15);
+  cursor: pointer;
+  transition: background 0.15s ease;
+}
+
+.toggle-switch--on {
+  background: linear-gradient(135deg, #6d4fa8, #8b6dc7);
+}
+
+.toggle-switch__knob {
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: #fff;
+  transition: transform 0.15s ease;
+}
+
+.toggle-switch--on .toggle-switch__knob {
+  transform: translateX(18px);
+}
+
+.league-card__submit {
+  width: 100%;
+  padding: 13px;
+  font-family: "Inter", sans-serif;
+  font-size: 13.5px;
+  font-weight: 700;
+  color: #fff;
+  background: linear-gradient(135deg, #6d4fa8, #8b6dc7);
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+.public-league-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.public-league-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 14px;
+  border-radius: 9px;
+  background: rgba(0, 0, 0, 0.25);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.public-league-row__name {
+  font-size: 13px;
+  font-weight: 700;
+  color: #fff;
+  margin: 0 0 2px;
+}
+
+.public-league-row__meta {
+  font-size: 11px;
+  color: rgba(255, 255, 255, 0.45);
+  margin: 0;
+}
+
+.public-league-row__cta {
+  padding: 7px 16px;
+  font-size: 12px;
+  font-weight: 700;
+  color: #fff;
+  background: linear-gradient(135deg, #6d4fa8, #8b6dc7);
+  border: none;
+  border-radius: 7px;
+  cursor: pointer;
+}
+
+.public-league-row__cta:disabled {
+  background: rgba(255, 255, 255, 0.08);
+  color: rgba(255, 255, 255, 0.35);
+  cursor: not-allowed;
+}
+
+/* ----------------------------------------- */
+/* Draft Filters & Tabs                      */
+/* ----------------------------------------- */
+.draft-filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  align-items: center;
+  background: rgba(0, 0, 0, 0.2);
+  padding: 12px 16px;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.draft-filter-input {
+  min-width: 160px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  padding: 8px 12px;
+  color: white;
+  font-family: "Inter", sans-serif;
+  outline: none;
+}
+
+.draft-filter-input:focus {
+  border-color: #8b6dc7;
+}
+
+/* ----------------------------------------- */
+/* Horizontal Carousel                       */
+/* ----------------------------------------- */
+/* ----------------------------------------- */
+/* Available players: uniform pill rows (#39) */
+/* ----------------------------------------- */
+.draft-list-heading {
+  white-space: nowrap;
+}
+
+.draft-list-heading span {
+  display: inline;
+}
+
+.draft-sort {
+  flex: none;
+  padding: 8px 14px;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  background: rgba(255, 255, 255, 0.05);
+  color: #fff;
+  font-family: "Inter", sans-serif;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+.draft-sort:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.draft-player-list {
+  flex: 1;
+  min-height: 0;
+  margin-top: 16px;
+  padding-right: 6px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.draft-player-row {
+  flex: none;
+  height: 56px;
+  display: grid;
+  grid-template-columns: 78px 110px minmax(0, 1fr) 96px;
+  align-items: center;
+  gap: 14px;
+  padding: 0 8px 0 10px;
+  border-radius: 999px;
+  background: linear-gradient(145deg, #2a2538, #1a1721);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  transition:
+    border-color 0.15s ease,
+    background 0.15s ease;
+}
+
+.draft-player-row:hover {
+  border-color: rgba(139, 109, 199, 0.5);
+}
+
+.draft-player-row__price {
+  justify-self: start;
+  padding: 4px 12px;
+  border-radius: 999px;
+  background: rgba(139, 109, 199, 0.24);
+  font-family: "Oswald", sans-serif;
+  font-size: 16px;
+  font-weight: 700;
+  color: #c7b6e8;
+}
+
+.draft-player-row__pos {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.draft-player-row__who {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.draft-player-row__name,
+.draft-player-row__team {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.draft-player-row__name {
+  font-size: 14px;
+  font-weight: 700;
+  color: #fff;
+}
+
+.draft-player-row__team {
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.draft-player-row__action {
+  height: 38px;
+  border-radius: 999px;
+  border: none;
+  background: linear-gradient(135deg, #6d4fa8, #8b6dc7);
+  color: #fff;
+  font-weight: 700;
+  font-size: 12.5px;
+  cursor: pointer;
+  transition: transform 0.1s;
+}
+
+.draft-player-row__action:active:not(:disabled) {
+  transform: scale(0.96);
+}
+
+.draft-player-row__action:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Already in my squad (#38): kept in the list, but plainly marked so it
+   can't be mistaken for a player that's just unaffordable or FULL. */
+.draft-player-row--picked {
+  background: rgba(139, 109, 199, 0.12);
+  border-color: rgba(139, 109, 199, 0.55);
+}
+
+.draft-player-row--picked .draft-player-row__name,
+.draft-player-row--picked .draft-player-row__team,
+.draft-player-row--picked .draft-player-row__pos {
+  opacity: 0.6;
+}
+
+.draft-player-row--picked .draft-player-row__action:disabled {
+  opacity: 1;
+  cursor: default;
+  background: transparent;
+  border: 1px solid rgba(139, 109, 199, 0.7);
+  color: #c7b6e8;
+}
+
+.draft-player-row--picked .draft-player-row__action::before {
+  content: "✓ ";
+}
+
+.draft-player-list__more {
+  margin: 4px 0 0;
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.45);
+  text-align: center;
+}
+
+/* Make sure the squad list items from earlier are still here */
+.squad-list-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 14px;
+  background: rgba(0, 0, 0, 0.25);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 10px;
+  margin-bottom: 8px;
+  transition:
+    background 0.2s,
+    transform 0.2s;
+}
+
+.squad-list-item:hover {
+  background: rgba(0, 0, 0, 0.4);
+  transform: translateX(4px);
+}
+
+.draft-btn {
+  padding: 8px 16px;
+  font-size: 12px;
+  font-weight: 700;
+  color: white;
+  background: linear-gradient(135deg, #6d4fa8, #8b6dc7);
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition:
+    transform 0.15s ease,
+    box-shadow 0.15s ease;
+}
+.draft-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 15px rgba(109, 79, 168, 0.4);
+}
+.draft-btn:active {
+  transform: translateY(0);
+}
+.squad-list-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 14px;
+  background: rgba(0, 0, 0, 0.25);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 10px;
+  margin-bottom: 8px;
+  transition:
+    background 0.2s,
+    transform 0.2s;
+}
+.squad-list-item:hover {
+  background: rgba(0, 0, 0, 0.4);
+  transform: translateX(4px);
+}

@@ -1,4 +1,40 @@
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
 node_modules
 dist
+dist-ssr
 *.local
+
+# Environment / secrets
+.env
+
+# Supabase CLI local state
+.supabase/
+
+# Editor directories and files
+.vscode/*
+!.vscode/extensions.json
+.idea
 .DS_Store
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+.vercel
+.env*
+!.env.example
+
+# S2-16 seed script local run-state (profile IDs/emails it created, for
+# idempotent re-runs and teardown) - never shared, regenerated per machine
+scripts/.seed-manifest.json
+
+# API-Football response cache (scripts/lib/apiFootball.ts)
+.cache/

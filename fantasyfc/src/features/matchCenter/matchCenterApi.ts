@@ -1,12 +1,14 @@
-// Match Center data source - portfolio version.
+// Match Center data source: reads public.fixture (S2-07), joined to
+// public.club for team names. The two foreign keys on fixture both point at
+// club, so each embed is disambiguated by column name - see
+// s2-07-seed-demo-live.ts for the same pattern.
 //
-// In production, fixtures are ingested from the official FPL API into a
-// `fixture` table (joined to `club` for team names) and read here through
-// Supabase. This version builds the same FixtureRow shape from sample data,
-// with kickoff times relative to now so there are always finished, live and
-// upcoming matches to show.
+// FixtureStatus keeps its original SCHEDULED/LIVE/FINISHED spelling (not
+// fixture.status's UPCOMING/LIVE/COMPLETED) so MatchCenterPage, written
+// against the pre-S2-07 mock, didn't need to change to match the DB's words.
 
-import { FIXTURES, later } from "../../data/sampleData";
+import { supabase } from "../../lib/supabaseClient";
+import { unwrapMany } from "../../lib/dataAccess";
 
 export type FixtureStatus = "SCHEDULED" | "LIVE" | "FINISHED";
 
@@ -24,35 +26,68 @@ export interface FixtureRow {
   away_score: number | null;
 }
 
-const HOUR = 60 * 60 * 1000;
+type DbFixtureStatus = "UPCOMING" | "LIVE" | "COMPLETED";
 
-/** One competition's fixtures; the Premier League's when none is given. */
+const STATUS_MAP: Record<DbFixtureStatus, FixtureStatus> = {
+  UPCOMING: "SCHEDULED",
+  LIVE: "LIVE",
+  COMPLETED: "FINISHED",
+};
+
+interface FixtureQueryRow {
+  id: number;
+  gameweek: { number: number } | null;
+  kickoff_at: string | null;
+  status: DbFixtureStatus;
+  home_score: number | null;
+  away_score: number | null;
+  home: { name: string } | null;
+  away: { name: string } | null;
+}
+
+/**
+ * One competition's fixtures (#44): the current league's, or the Premier
+ * League's when there is no current league.
+ */
 export async function getFixtures(competitionId: number | null = null): Promise<FixtureRow[]> {
-  const now = Date.now();
-  const id = competitionId ?? 1;
+  const query = supabase
+    .from("fixture")
+    .select(
+      `
+      id,
+      gameweek ( number ),
+      kickoff_at,
+      status,
+      home_score,
+      away_score,
+      home:club!home_club_id ( name ),
+      away:club!away_club_id ( name ),
+      competition!inner ( code )
+      `,
+    );
+  const result = await (competitionId === null
+    ? query.eq("competition.code", "PL")
+    : query.eq("competition_id", competitionId))
+    // Ascending: earliest kickoff first, whichever tab is showing - oldest
+    // completed match first within Completed, soonest match first within
+    // Upcoming. NULLS LAST (Postgres's default for ascending) puts any
+    // not-yet-timed fixture at the end rather than the top.
+    .order("kickoff_at", { ascending: true })
+    // Without generated DB types, supabase-js can't tell a many-to-one embed
+    // (fixture -> one club) returns a single object rather than an array -
+    // same issue s2-07-seed-demo-live.ts works around with .overrideTypes().
+    .overrideTypes<FixtureQueryRow[], { merge: false }>();
 
-  const rows = FIXTURES.filter((f) => f.competitionId === id)
-    .map((f) => ({
-      id: f.id,
-      gameweek_number: f.gameweek,
-      kickoff_at:
-        f.kickoffOffsetHours === null
-          ? null
-          : new Date(now + f.kickoffOffsetHours * HOUR).toISOString(),
-      status: f.status,
-      home_team: f.home,
-      away_team: f.away,
-      home_score: f.homeScore,
-      away_score: f.awayScore,
-    }))
-    // Earliest kickoff first; fixtures with no kickoff time go last
-    // (Postgres's NULLS LAST for an ascending sort).
-    .sort((a, b) => {
-      if (a.kickoff_at === b.kickoff_at) return 0;
-      if (a.kickoff_at === null) return 1;
-      if (b.kickoff_at === null) return -1;
-      return a.kickoff_at < b.kickoff_at ? -1 : 1;
-    });
+  const rows = unwrapMany<FixtureQueryRow>(result, "fixtures");
 
-  return later(rows);
+  return rows.map((f) => ({
+    id: f.id,
+    gameweek_number: f.gameweek?.number ?? null,
+    kickoff_at: f.kickoff_at,
+    status: STATUS_MAP[f.status],
+    home_team: f.home?.name ?? "TBC",
+    away_team: f.away?.name ?? "TBC",
+    home_score: f.home_score,
+    away_score: f.away_score,
+  }));
 }

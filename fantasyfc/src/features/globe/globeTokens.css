@@ -1,0 +1,80 @@
+/*
+  Colours for the globe, taken from the rest of the site (Sidebar.css,
+  DashboardPage.css, leagues.css) so the screen reads as part of it:
+  violet accent, white-alpha text, glass panels over the stadium backdrop.
+
+  Scoped to the globe screen rather than :root so they can't leak into other
+  pages. palette.ts reads the --globe-* and --lg-* values back with
+  getComputedStyle for the shaders, so those must stay plain hex colours.
+*/
+.globe-discovery,
+.globe-discovery-fallback {
+  /* Shaders (solid hex only) */
+  --globe-ocean: #1d1b23;
+  --globe-rim: #3b3352;
+  --globe-glow: #8b6dc7;
+  --globe-land: #4a4556;
+  --globe-emphasis: #e4dafa;
+
+  /* League colours: live leagues in violet, coming-soon ones in grey. */
+  --globe-live: #a26bff;
+  --globe-live-2: #6d4fa8;
+  --globe-soon: #645e74;
+  --globe-soon-2: #3d3947;
+  --lg-premier-league: var(--globe-live);
+  --lg2-premier-league: var(--globe-live-2);
+  --lg-la-liga: var(--globe-live);
+  --lg2-la-liga: var(--globe-live-2);
+  --lg-bundesliga: var(--globe-live);
+  --lg2-bundesliga: var(--globe-live-2);
+  --lg-serie-a: var(--globe-live);
+  --lg2-serie-a: var(--globe-live-2);
+  --lg-ligue-1: var(--globe-live);
+  --lg2-ligue-1: var(--globe-live-2);
+  --lg-mls: var(--globe-live);
+  --lg2-mls: var(--globe-live-2);
+  --lg-j1-league: var(--globe-live);
+  --lg2-j1-league: var(--globe-live-2);
+  --lg-eredivisie: var(--globe-live);
+  --lg2-eredivisie: var(--globe-live-2);
+  --lg-primeira-liga: var(--globe-live);
+  --lg2-primeira-liga: var(--globe-live-2);
+  --lg-betway-premiership: var(--globe-live);
+  --lg2-betway-premiership: var(--globe-live-2);
+
+  /* Same values the rest of the site uses */
+  --glass: rgba(32, 30, 38, 0.68);
+  --glass-strong: rgba(32, 30, 38, 0.86);
+  --line: rgba(255, 255, 255, 0.1);
+  --line-strong: rgba(255, 255, 255, 0.15);
+  --fill: rgba(255, 255, 255, 0.05);
+  --fill-hover: rgba(255, 255, 255, 0.1);
+  --text: #fff;
+  --text-2: rgba(255, 255, 255, 0.62);
+  --text-3: rgba(255, 255, 255, 0.45);
+  --violet-soft: #c7b6e8;
+  --violet-tint: rgba(139, 109, 199, 0.24);
+  --violet-border: rgba(139, 109, 199, 0.4);
+  --button: #7c3aed;
+  --button-hover: #6d28d9;
+  --globe-vignette: rgb(20, 19, 24);
+
+  color-scheme: dark;
+  color: var(--text);
+  font-family: "Inter", sans-serif;
+  line-height: 1.5;
+}
+
+/*
+  Element resets, wrapped in :where() so they carry no specificity. Written as
+  plain `.globe-discovery p` they would beat the component classes and undo
+  their sizes and spacing.
+*/
+:where(.globe-discovery, .globe-discovery-fallback) :where(h1, h2, p) {
+  margin: 0;
+}
+
+:where(.globe-discovery, .globe-discovery-fallback) :where(button) {
+  font: inherit;
+  color: inherit;
+}
