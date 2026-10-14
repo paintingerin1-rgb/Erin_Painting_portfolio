@@ -1,0 +1,13 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+
+# Config for Ingenious Framework
+*.json
+*.jar
+
+# Log files
+*.log
+C_client_logs/
+results.csv
+players/
