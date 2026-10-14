@@ -2,7 +2,7 @@
 
 A full-stack fantasy football web app built by a team of five for **Entelect**, a South African software consultancy, as our third-year software engineering project at Stellenbosch University (RW344, 2026).
 
-I was the **front-end and UI/UX lead**. I designed the interface, built the Players, Match Center and Standings pages, and wrote the TypeScript version of the scoring engine and its tests.
+I was the **front-end and UI/UX lead**. I set up the React app, designed the interface, built the first version of almost every screen, connected the Players and Match Center pages to real data, wrote the TypeScript scoring engine and the demo-league seed script, and led the final UI polish.
 
 **Live app:** [cuneiform-project.vercel.app](https://cuneiform-project.vercel.app) (the team's deployment; sign in with any Google account)
 
@@ -28,14 +28,14 @@ Scoring follows the official Fantasy Premier League rules, identical in every le
 
 ## Tech stack
 
-| Layer | Choice |
-| --- | --- |
-| Frontend | React 19, TypeScript, Vite, React Router |
-| 3D globe | Three.js via React Three Fiber, d3-geo, world-atlas |
-| Backend | Supabase: Postgres, Google OAuth, row-level security, realtime |
-| Data | football-data.org, the official FPL API, the ESPN API |
-| Testing | Vitest and React Testing Library: **281 tests across 27 files** |
-| CI/CD | Lint, test and build on every merge request, with automatic deploys to Vercel |
+| Layer    | Choice                                                                        |
+| -------- | ----------------------------------------------------------------------------- |
+| Frontend | React 19, TypeScript, Vite, React Router                                      |
+| 3D globe | Three.js via React Three Fiber, d3-geo, world-atlas                           |
+| Backend  | Supabase: Postgres, Google OAuth, row-level security, realtime                |
+| Data     | football-data.org, the official FPL API, the ESPN API                         |
+| Testing  | Vitest and React Testing Library: **281 tests across 27 files**               |
+| CI/CD    | Lint, test and build on every merge request, with automatic deploys to Vercel |
 
 There's no separate API server. The browser talks to Postgres through Supabase, every table is protected by row-level security policies, and sensitive actions like drafting a player or joining a league run as database functions.
 
@@ -43,58 +43,80 @@ There's no separate API server. The browser talks to Postgres through Supabase, 
 
 ## My role
 
+I was the front-end and UI/UX lead from the first day to the last. I set up the React app, designed the interface, and built the first version of almost every screen. Through Sprints 1 and 2 alone that was **34 commits and about 8,400 lines of code**, before the Sprint 3 polish work.
+
 ### UI/UX design (mine end to end)
 
 - Before any code, I drew up questions for the client, wireframed **13 screens**, and wrote the **style guide**: the colour system, the typography (Oswald for headings and numbers, Inter for body text) and the component patterns the whole team built on.
 - I iterated on the design through Q&A sessions with the client and their visual feedback each sprint.
-- The visual direction is *matchday at night*: a dark, floodlit-stadium feel, one violet accent so it's always clear what's clickable, and a scoreboard-style font for the numbers that matter.
+- The visual direction is _matchday at night_: a dark, floodlit-stadium feel, one violet accent so it's always clear what's clickable, and a scoreboard-style font for the numbers that matter.
 - For anything with more than one reasonable design, I built clickable HTML previews of the options before writing component code. For example, I mocked three versions of the Standings sort control in the app's real colours, and we picked the clearest one.
 
-### Code I wrote
+### Everything I built
 
-| Area | Where | Highlights |
-| --- | --- | --- |
-| **Players page** | [`src/features/players`](src/features/players) | Search by player or club, position and league filters, server-side pagination with a stable sort, equal-size cards |
-| **Match Center** | [`src/features/matchCenter`](src/features/matchCenter) | Live / upcoming / completed tabs, fixtures grouped by gameweek |
-| **Standings** | [`src/features/standings`](src/features/standings) | Rank movement, sortable gameweek and total columns, a scoring tooltip for new players, "you" highlighting |
-| **FixtureRow** (with Dannike) | [`src/components/FixtureRow`](src/components/FixtureRow) | One shared fixture component for the Dashboard and Match Center: teams centred on "vs" or the score, plus won/drew/lost dots |
-| **Dashboard polish** | [`src/features/dashboard`](src/features/dashboard) | Live "Gameweek begins in" countdown, centred fixtures |
-| **Date formatting** | [`src/lib/dateFormat.ts`](src/lib/dateFormat.ts) | One shared formatter for every kickoff and deadline |
-| **Scoring engine (TypeScript)** | [`src/features/scoring`](src/features/scoring) | Official FPL rules as a pure function, with 43 rule-by-rule tests plus tests against real players' published scores |
+| Area                            | Where                                                                                                    | What I did                                                                                                                                                                 |
+| ------------------------------- | -------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Project setup**               | `vite.config.ts`, `tsconfig*.json`, `eslint.config.js`                                                   | Scaffolded the React 19 + TypeScript + Vite app the whole team builds on                                                                                                   |
+| **Login and Google sign-in**    | [`src/features/auth`](src/features/auth), [`src/lib/auth.ts`](src/lib/auth.ts)                           | The login page and the Google OAuth sign-in and sign-out flow                                                                                                              |
+| **App shell and routing**       | [`src/components/Sidebar`](src/components/Sidebar), `src/AppRoutes.tsx`                                  | The sidebar navigation, the page routing, and the placeholder pages for routes still in progress                                                                           |
+| **Dashboard**                   | [`src/features/dashboard`](src/features/dashboard), [`src/components/StatCard`](src/components/StatCard) | The original dashboard UI and stat cards; later a live "Gameweek begins in" countdown and centred fixtures                                                                 |
+| **My Squad**                    | [`src/features/squad`](src/features/squad), [`src/components/PlayerCard`](src/components/PlayerCard)     | The first squad screen: the pitch view and the player cards, colour-coded by position                                                                                      |
+| **Draft**                       | [`src/features/draft`](src/features/draft)                                                               | The first draft room UI; in Sprint 3, with Gajen, position tabs, picked-player indicators and price sorting                                                                |
+| **Leagues**                     | [`src/features/leagues`](src/features/leagues)                                                           | The first leagues page UI                                                                                                                                                  |
+| **Players**                     | [`src/features/players`](src/features/players)                                                           | The page and its data layer: search by player or club, a position filter, server-side pagination with a stable sort, and later equal-size cards                            |
+| **Match Center**                | [`src/features/matchCenter`](src/features/matchCenter)                                                   | The page and its data layer: live / upcoming / completed tabs, fixtures grouped by gameweek, real results from the FPL feed                                                |
+| **Standings**                   | [`src/features/standings`](src/features/standings)                                                       | The first standings page; later sortable gameweek and total columns, and a scoring tooltip for new players                                                                 |
+| **Scoring engine (TypeScript)** | [`src/features/scoring`](src/features/scoring)                                                           | Official FPL rules as a pure function, with 43 rule-by-rule tests                                                                                                          |
+| **Demo league seeding**         | [`scripts/seed-leagues.ts`](scripts/seed-leagues.ts)                                                     | An ~800-line script that fills the app with realistic leagues: demo profiles, public leagues and complete, legal squads within the budget. Safe to re-run, with a teardown |
+| **FixtureRow** (with Dannike)   | [`src/components/FixtureRow`](src/components/FixtureRow)                                                 | One shared fixture component for the Dashboard and Match Center: teams centred on "vs" or the score, plus won/drew/lost dots                                               |
+| **Date formatting**             | [`src/lib/dateFormat.ts`](src/lib/dateFormat.ts)                                                         | One shared formatter for every kickoff and deadline, plus the countdown logic, with tests                                                                                  |
 
 ---
 
 ## Sprint by sprint
 
-### Sprint 1: Foundations
+### Sprint 1: Foundations (UI for the whole app)
 
-**What I did:** the client questions, the 13 wireframes and the style guide. I scaffolded the React + TypeScript + Vite app with routing and Google sign-in, and built the first versions of the main pages.
+**What I did:**
 
-**What worked:** designing before coding. We agreed scope with the client early, and the app looked like one product even with five people building it.
+- Wrote the client questions, wireframed the 13 screens and wrote the style guide.
+- Set up the React + TypeScript + Vite project.
+- Built the UI for the login page with Google sign-in, the sidebar and dashboard, My Squad with its pitch view and player cards, the draft room, the Players, Standings and Leagues pages, and the placeholder pages for everything still to come.
+- Fixed the login and logout bugs along the way.
+
+**What worked:** designing before coding. We agreed scope with the client early, and because the style guide and the first version of each screen came from one person, the app looked like one product even with five people building it.
 
 **What didn't:**
+
 - At the review, Entelect told us it was hard to see who built what, our agile process wasn't visible, we had no tests, and the demo ran over time.
 - Two of us built the same component in parallel without knowing it. Git flagged it as an add/add conflict, because our branches had lived too long without touching the main branch.
 - The production site ran a version behind at the demo, because deploys were manual.
 
 **What we changed:**
+
 - We protected the main branch: every change goes through a merge request, branches live at most three days, and you post what you're picking up before starting. This is all written up in [`CONTRIBUTING.md`](CONTRIBUTING.md).
 - Every merge request needs one approval from someone else, never yourself.
 - We added a CI pipeline (lint, tests and build) that blocks a merge if anything fails, and automated deployment.
 - We built a who-did-what table from our commit history, and planned the next demo to the minute.
 
-### Sprint 2: The engine
+### Sprint 2: The engine (connecting the UI to real data)
 
 **What I did:**
-- Connected the Players page to real data (548 Premier League players) with server-side search, filtering and pagination.
-- Built Match Center on real fixtures from the official FPL feed, and the first live Standings.
-- Wrote the TypeScript scoring engine with **43 rule-by-rule tests**.
+
+- **Players:** connected the page to the real database (548 Premier League players), with server-side search, filtering and pagination. I also fixed a tab bug and the pagination buttons.
+- **Match Center:** built the page and its data layer on real fixtures from the official FPL feed, wired into the new gameweek and fixture tables.
+- **Scoring engine:** wrote the TypeScript version of the FPL scoring rules, with **43 rule-by-rule tests**.
+- **Demo leagues:** wrote the seed script that filled the app with realistic leagues for demos and testing. It builds full squads that respect the budget and position limits, and is safe to re-run.
+- **Dashboard:** updated the dashboard UI, and fixed the app routes after the sprint's merges.
 
 **What worked:**
+
 - The scoring rules exist twice on purpose: as a SQL function in the database, which powers the real standings, and as my TypeScript version. Checking both against the same rules caught a real bug: a substitute who played ten minutes was getting clean-sheet points, when the rule needs sixty. My tests check exactly that boundary, 59 minutes against 60.
+- The seeded leagues meant every screen had realistic data to show and test against, not an empty table.
 - The CI gate and required reviews meant nothing broken reached the main branch.
 
 **What didn't:**
+
 - Player prices came out in flat tiers (only 8 different prices across 548 players), and the client flagged it.
 - The draft made it hard to see who you'd already picked.
 - We didn't run a retrospective that sprint.
@@ -105,19 +127,24 @@ There's no separate API server. The browser talks to Postgres through Supabase, 
 ### Sprint 3: Scale and polish
 
 **What I did** (from a shared pool of small, specific tickets):
+
 - **Standings:** sortable gameweek and total columns, plus an "i" tooltip that explains scoring in place.
 - **Dashboard:** a live "Gameweek begins in" countdown, and one shared date formatter.
 - **FixtureRow:** a shared component, so a fixture looks identical everywhere, with result dots.
 - **Players:** all cards the same size, and search moved below the header.
+- **Draft room** (with Gajen): position tabs, indicators showing who you've already picked, and price sorting, which answered the client's Sprint 2 feedback.
+- **Branding:** the "Entelect" wordmark set in the agreed Oswald font.
 - **CSS collisions:** I tracked two down. The Draft page's 280px-tall card class was leaking onto the Players page, and the Dashboard and Match Center fixture styles were overwriting each other. Fixed by giving each page its own class names.
 
 **The rest of the team** delivered the 3D globe, the expansion from one league to ten, the gameweek lineup lock, starting-eleven scoring, and chat moderation.
 
 **What worked:**
+
 - Small tickets with clear acceptance criteria kept merge requests easy to review.
 - Agreeing a design before building it (through the HTML previews) cut down on rework.
 
 **What didn't:**
+
 - Some polish tickets depended on a shared component that didn't exist yet, so we had to sequence the work carefully.
 - Our tests are strongest on scoring and data matching, and thinner on the interface.
 
