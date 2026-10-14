@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<!-- Login screen: a single centred card on the app background -->
+<StackPane xmlns="http://javafx.com/javafx/11"
+           xmlns:fx="http://javafx.com/fxml/1"
+           fx:controller="client.ui.LoginController"
+           stylesheets="@theme.css"
+           prefWidth="420" prefHeight="400"
+           style="-fx-padding: 30;">
+
+    <VBox styleClass="card" alignment="CENTER" spacing="14" maxWidth="340" maxHeight="-Infinity">
+
+        <Label text="Group 17 VoIP" styleClass="title"/>
+        <Label text="Chat, voice notes and group calls" styleClass="subtitle"/>
+
+        <Region prefHeight="6"/>
+
+        <VBox spacing="6">
+            <Label text="USERNAME" styleClass="field-label"/>
+            <TextField fx:id="usernameField" promptText="e.g. erin" onAction="#handleLogin"/>
+        </VBox>
+
+        <Button text="Join" styleClass="primary" maxWidth="Infinity" onAction="#handleLogin"/>
+
+        <!-- Errors / connection status -->
+        <Label fx:id="statusLabel" text="" styleClass="error-label" wrapText="true"/>
+    </VBox>
+</StackPane>

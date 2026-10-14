@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.VBox?>
+
+<!-- Server dashboard: live activity log + who is connected -->
+<BorderPane xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="server.serverUI.ServerController"
+            stylesheets="@theme.css"
+            prefWidth="780" prefHeight="500">
+
+    <top>
+        <HBox styleClass="topbar" alignment="CENTER_LEFT" spacing="12">
+            <Label text="Group 17 VoIP · Server" styleClass="topbar-title"/>
+            <Region HBox.hgrow="ALWAYS"/>
+            <HBox styleClass="status-pill" alignment="CENTER" spacing="8">
+                <Label text="●" styleClass="status-dot"/>
+                <Label text="Running" styleClass="hint"/>
+            </HBox>
+        </HBox>
+    </top>
+
+    <center>
+        <VBox spacing="8" style="-fx-padding: 16 8 16 16;">
+            <Label text="ACTIVITY LOG" styleClass="section-title"/>
+            <TextArea fx:id="logArea" editable="false" wrapText="true"
+                      style="-fx-font-family: 'JetBrains Mono', 'Fira Code', 'Courier New', monospace; -fx-font-size: 12px;"
+                      VBox.vgrow="ALWAYS"/>
+        </VBox>
+    </center>
+
+    <right>
+        <VBox spacing="8" minWidth="200" prefWidth="200" style="-fx-padding: 16 16 16 8;">
+            <Label text="ONLINE" styleClass="section-title"/>
+            <ListView fx:id="userListView" VBox.vgrow="ALWAYS"/>
+        </VBox>
+    </right>
+</BorderPane>

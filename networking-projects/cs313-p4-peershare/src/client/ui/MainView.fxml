@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.*?>
+
+<!--
+    MainView.fxml
+    Main PeerShare window: choose a shared folder, search the network,
+    download files, and watch transfer progress.
+-->
+<BorderPane xmlns="http://javafx.com/javafx/11"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="client.ui.MainController"
+            stylesheets="@theme.css"
+            prefWidth="860" prefHeight="600">
+
+    <!-- Top bar: brand, who you are, logout -->
+    <top>
+        <VBox>
+            <HBox styleClass="topbar" alignment="CENTER_LEFT" spacing="12">
+                <Label text="PeerShare" styleClass="topbar-title"/>
+                <Region HBox.hgrow="ALWAYS"/>
+
+                <HBox styleClass="status-pill" alignment="CENTER" spacing="8">
+                    <Label fx:id="statusDotLabel" text="●" styleClass="status-dot"/>
+                    <Label fx:id="usernameBadge" text="@user"/>
+                </HBox>
+
+                <Button fx:id="disconnectButton" text="Log out" styleClass="ghost-danger, small"
+                        onAction="#handleDisconnect"/>
+            </HBox>
+
+            <!-- Shared folder -->
+            <HBox styleClass="toolbar-row" alignment="CENTER_LEFT" spacing="12">
+                <Label text="SHARED FOLDER" styleClass="field-label"/>
+                <Label fx:id="sharedFolderLabel" text="Nothing shared yet" styleClass="hint"
+                       HBox.hgrow="ALWAYS" maxWidth="Infinity"/>
+                <Button text="Change folder" styleClass="small" onAction="#handleChooseFolder"/>
+            </HBox>
+        </VBox>
+    </top>
+
+    <center>
+        <VBox spacing="10" style="-fx-padding: 18;">
+
+            <HBox spacing="8">
+                <TextField fx:id="searchField" promptText="Search for a file on the network…"
+                           onAction="#handleSearch" HBox.hgrow="ALWAYS"/>
+                <Button text="Search" styleClass="primary" onAction="#handleSearch"/>
+            </HBox>
+
+            <Label fx:id="resultsCountLabel" text="" styleClass="section-title"/>
+
+            <ListView fx:id="resultsList" VBox.vgrow="ALWAYS">
+                <placeholder>
+                    <Label text="No results yet. Search for a file name to get started."/>
+                </placeholder>
+            </ListView>
+        </VBox>
+    </center>
+
+    <!-- Transfer progress (hidden until a transfer starts) -->
+    <bottom>
+        <VBox fx:id="transferPanel" styleClass="topbar" spacing="10" visible="false" managed="false"
+              style="-fx-border-color: -border transparent transparent transparent; -fx-padding: 14 18;">
+
+            <HBox alignment="CENTER_LEFT" spacing="12">
+                <Label fx:id="transferTypeLabel" text="Transferring" styleClass="accent-text"/>
+                <Label fx:id="transferFilenameLabel" text="" HBox.hgrow="ALWAYS" maxWidth="Infinity"/>
+                <Label fx:id="transferPercentLabel" text="0%" styleClass="ok-label"/>
+                <Button fx:id="pauseResumeButton" text="Pause" styleClass="small"
+                        onAction="#handlePauseResume"/>
+            </HBox>
+
+            <ProgressBar fx:id="transferProgressBar" progress="0.0" maxWidth="Infinity" prefHeight="10"/>
+        </VBox>
+    </bottom>
+</BorderPane>

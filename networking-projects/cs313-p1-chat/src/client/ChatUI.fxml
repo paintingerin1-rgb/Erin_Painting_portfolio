@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<!-- Main chat window: top bar, message area, online-users sidebar -->
+<BorderPane xmlns="http://javafx.com/javafx/11"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="client.ChatController"
+            stylesheets="@theme.css"
+            prefWidth="820" prefHeight="560">
+
+    <top>
+        <HBox styleClass="topbar" alignment="CENTER_LEFT" spacing="10">
+            <Label text="Group 17 Chat" styleClass="topbar-title"/>
+            <Region HBox.hgrow="ALWAYS"/>
+            <HBox styleClass="status-pill" alignment="CENTER" spacing="8">
+                <Label text="●" styleClass="status-dot"/>
+                <Label fx:id="statusLabel" text="Connected" styleClass="hint"/>
+            </HBox>
+        </HBox>
+    </top>
+
+    <center>
+        <VBox spacing="10" style="-fx-padding: 16;">
+            <TextArea fx:id="globalChatArea" editable="false" wrapText="true" VBox.vgrow="ALWAYS"/>
+            <HBox spacing="8">
+                <TextField fx:id="messageInput" HBox.hgrow="ALWAYS"
+                           promptText="Message everyone…" onAction="#handleSend"/>
+                <Button text="Send" styleClass="primary" onAction="#handleSend"/>
+            </HBox>
+        </VBox>
+    </center>
+
+    <right>
+        <VBox styleClass="sidebar" spacing="8" minWidth="190" prefWidth="190">
+            <Label text="ONLINE" styleClass="section-title"/>
+            <ListView fx:id="userListView" VBox.vgrow="ALWAYS"/>
+            <Label text="Double-click a name to send a private message" styleClass="hint" wrapText="true"/>
+        </VBox>
+    </right>
+</BorderPane>

@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<!--
+    LoginView.fxml
+    Connection screen for PeerShare: pick a name, point at the server, connect.
+-->
+<StackPane xmlns="http://javafx.com/javafx/11"
+           xmlns:fx="http://javafx.com/fxml/1"
+           fx:controller="client.ui.LoginController"
+           stylesheets="@theme.css"
+           prefWidth="440" prefHeight="500"
+           style="-fx-padding: 30;">
+
+    <VBox styleClass="card" alignment="CENTER" spacing="14" maxWidth="360" maxHeight="-Infinity">
+
+        <Label text="PeerShare" styleClass="title"/>
+        <Label text="Encrypted peer-to-peer file sharing" styleClass="subtitle"/>
+
+        <Region prefHeight="4"/>
+
+        <VBox spacing="6">
+            <Label text="DISPLAY NAME" styleClass="field-label"/>
+            <TextField fx:id="usernameField" promptText="Pick a unique name"/>
+        </VBox>
+
+        <HBox spacing="10">
+            <VBox spacing="6" HBox.hgrow="ALWAYS">
+                <Label text="SERVER ADDRESS" styleClass="field-label"/>
+                <TextField fx:id="serverIpField" promptText="127.0.0.1"/>
+            </VBox>
+            <VBox spacing="6" prefWidth="84" minWidth="84">
+                <Label text="PORT" styleClass="field-label"/>
+                <TextField fx:id="portField" promptText="5000"/>
+            </VBox>
+        </HBox>
+
+        <!-- Shown only when validation or the connection fails -->
+        <Label fx:id="errorLabel" text="" styleClass="error-label" wrapText="true"
+               visible="false" managed="false"/>
+
+        <Button fx:id="connectButton" text="Connect" styleClass="primary"
+                onAction="#handleConnect" maxWidth="Infinity"/>
+    </VBox>
+</StackPane>

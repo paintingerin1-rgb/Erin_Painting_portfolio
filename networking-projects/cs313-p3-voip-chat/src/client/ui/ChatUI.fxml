@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.VBox?>
+
+<!--
+    Main VoIP client window.
+    Top: connection + call status, incoming-call banner.
+    Centre: global chat, voice notes, message box (also accepts /commands).
+    Right: online users with a call button.
+-->
+<BorderPane xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="client.ui.ChatController"
+            stylesheets="@theme.css"
+            prefWidth="860" prefHeight="580">
+
+    <top>
+        <VBox>
+            <HBox styleClass="topbar" alignment="CENTER_LEFT" spacing="12">
+                <Label text="Group 17 VoIP" styleClass="topbar-title"/>
+                <HBox styleClass="status-pill" alignment="CENTER" spacing="8">
+                    <Label text="●" styleClass="status-dot"/>
+                    <Label fx:id="statusLabel" text="Connecting…" styleClass="hint"/>
+                </HBox>
+
+                <Region HBox.hgrow="ALWAYS"/>
+
+                <!-- Shown while a call is active -->
+                <Label fx:id="callStatusLabel" text="" styleClass="accent-text"/>
+                <Button fx:id="hangUpBtn" text="Hang up" styleClass="danger"
+                        onAction="#handleHangUp" visible="false"/>
+            </HBox>
+
+            <!-- Hidden until someone calls -->
+            <HBox fx:id="incomingCallBar" styleClass="banner" alignment="CENTER_LEFT" spacing="10"
+                  visible="false" managed="false">
+                <Label fx:id="incomingCallLabel"/>
+                <Region HBox.hgrow="ALWAYS"/>
+                <Button fx:id="acceptCallBtn" text="Accept" styleClass="success, small" onAction="#handleAcceptCall"/>
+                <Button fx:id="declineCallBtn" text="Decline" styleClass="danger, small" onAction="#handleDeclineCall"/>
+            </HBox>
+        </VBox>
+    </top>
+
+    <center>
+        <VBox spacing="10" style="-fx-padding: 16;">
+
+            <TextArea fx:id="globalChatArea" editable="false" wrapText="true" VBox.vgrow="ALWAYS"/>
+
+            <!-- Header stays hidden until the first global voice note arrives -->
+            <Label fx:id="globalVoiceNoteHeader" text="🎙  GLOBAL VOICE NOTES"
+                   styleClass="section-title" visible="false" managed="false"/>
+
+            <!-- Rows are added at runtime by WindowManager.addGlobalVoiceNoteToPanel() -->
+            <VBox fx:id="globalVoiceNotePanel" spacing="6"/>
+
+            <HBox spacing="10" alignment="CENTER_LEFT">
+                <Button fx:id="recordVoiceNoteBtn" text="Record Voice Note" onAction="#handleRecordVoiceNote"/>
+                <Label text="Sends to the selected user, or to everyone if nobody is selected."
+                       styleClass="hint"/>
+            </HBox>
+
+            <!-- Plain text, or: /call /hangup /whisper /join /leave /conference -->
+            <HBox spacing="8">
+                <TextField fx:id="messageInput" promptText="Message everyone, or type a /command…"
+                           onAction="#handleSend" HBox.hgrow="ALWAYS"/>
+                <Button text="Send" styleClass="primary" onAction="#handleSend"/>
+            </HBox>
+        </VBox>
+    </center>
+
+    <right>
+        <VBox styleClass="sidebar" spacing="8" minWidth="200" prefWidth="200" maxWidth="220">
+            <Label text="ONLINE" styleClass="section-title"/>
+
+            <!-- Double-click: whisper window.  Right-click: Call / Whisper menu. -->
+            <ListView fx:id="userListView" VBox.vgrow="ALWAYS"/>
+
+            <Label text="Double-click to whisper" styleClass="hint"/>
+            <Label text="Right-click to call or whisper" styleClass="hint"/>
+
+            <Button text="Call selected" styleClass="success" maxWidth="Infinity" onAction="#handleCallSelected"/>
+        </VBox>
+    </right>
+</BorderPane>
