@@ -1,0 +1,222 @@
+/* Prefixed scoring-page__: every page's CSS shares one bundle. */
+.scoring-page {
+  padding: 24px 32px 40px;
+}
+
+.scoring-page__eyebrow {
+  margin: 0 0 4px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #cbbcec;
+}
+
+.scoring-page__title {
+  margin: 0;
+  font-family: "Oswald", sans-serif;
+  font-size: 24px;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.scoring-page__lede {
+  max-width: 760px;
+  margin: 10px 0 0;
+  font-size: 13.5px;
+  line-height: 1.6;
+  color: rgba(255, 255, 255, 0.65);
+}
+
+.scoring-page__verdict {
+  display: inline-block;
+  margin: 18px 0;
+  padding: 7px 14px;
+  font-size: 12px;
+  font-weight: 700;
+  color: #4ade80;
+  background: rgba(74, 222, 128, 0.1);
+  border: 1px solid rgba(74, 222, 128, 0.35);
+  border-radius: 20px;
+}
+
+.scoring-page__verdict--bad {
+  color: #f87171;
+  background: rgba(248, 113, 113, 0.1);
+  border-color: rgba(248, 113, 113, 0.35);
+}
+
+.scoring-page__grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr);
+  gap: 16px;
+  align-items: start;
+}
+
+.scoring-page__panel {
+  padding: 18px 20px;
+  border-radius: 12px;
+  background: rgba(32, 30, 38, 0.68);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+.scoring-page__panel-title {
+  margin: 0 0 12px;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.85);
+}
+
+.scoring-page__table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.scoring-page__table th {
+  padding: 8px 8px;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  text-align: left;
+  color: rgba(255, 255, 255, 0.45);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.scoring-page__table td {
+  padding: 6px 8px;
+  font-size: 13px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.scoring-page__table tr:last-child td {
+  border-bottom: none;
+}
+
+.scoring-page__row--active td {
+  background: rgba(139, 109, 199, 0.16);
+}
+
+.scoring-page__player {
+  padding: 4px 0;
+  font-size: 13px;
+  font-weight: 700;
+  color: #fff;
+  text-align: left;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.scoring-page__player span {
+  margin-left: 4px;
+  font-size: 11px;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.45);
+}
+
+.scoring-page__player:hover,
+.scoring-page__player:focus-visible {
+  color: #d8b4fe;
+}
+
+.scoring-page__pos {
+  display: inline-block;
+  padding: 2px 7px;
+  font-size: 10px;
+  font-weight: 800;
+  border-radius: 5px;
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.scoring-page__num {
+  text-align: center !important;
+  font-variant-numeric: tabular-nums;
+}
+
+.scoring-page__ours {
+  font-family: "Oswald", sans-serif;
+  font-weight: 700;
+  color: #d8b4fe;
+}
+
+.scoring-page__check {
+  width: 28px;
+  font-weight: 800;
+  color: #4ade80;
+  text-align: center;
+}
+
+.scoring-page__breakdown {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.scoring-page__breakdown li {
+  display: flex;
+  justify-content: space-between;
+  padding: 7px 0;
+  font-size: 13px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.scoring-page__pos-pts {
+  font-weight: 700;
+  color: #4ade80;
+}
+
+.scoring-page__neg {
+  font-weight: 700;
+  color: #f87171;
+}
+
+.scoring-page__total {
+  font-family: "Oswald", sans-serif;
+  font-size: 15px !important;
+  font-weight: 700;
+  text-transform: uppercase;
+  border-bottom: none !important;
+}
+
+.scoring-page__rules-title {
+  margin-top: 22px;
+}
+
+.scoring-page__rules {
+  margin: 0;
+  display: grid;
+  gap: 4px;
+}
+
+.scoring-page__rules div {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  font-size: 12px;
+}
+
+.scoring-page__rules dt {
+  color: rgba(255, 255, 255, 0.85);
+  font-weight: 600;
+}
+
+.scoring-page__rules dd {
+  margin: 0;
+  text-align: right;
+  color: rgba(255, 255, 255, 0.55);
+}
+
+@media (max-width: 900px) {
+  .scoring-page {
+    padding: 20px 16px 32px;
+  }
+
+  .scoring-page__grid {
+    grid-template-columns: 1fr;
+  }
+}

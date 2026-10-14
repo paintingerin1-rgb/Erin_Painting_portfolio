@@ -1,0 +1,133 @@
+/* FixtureRow (#32): shared by Dashboard and Match Center. */
+
+.frow {
+  width: 100%;
+}
+
+.frow__time {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin-bottom: 6px;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.45);
+}
+
+/* Equal outer columns, so the centre lines up down a list of fixtures
+   whatever length the club names are. */
+.frow__match {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+  align-items: center;
+  column-gap: 12px;
+  font-size: 12.5px;
+  font-weight: 700;
+  color: #fff;
+}
+
+.frow__team {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  min-width: 0;
+}
+
+.frow__team--home {
+  justify-content: flex-end;
+}
+
+.frow__team--away {
+  justify-content: flex-start;
+}
+
+.frow__name {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.frow__centre {
+  min-width: 38px;
+  padding: 2px 8px;
+  border-radius: 4px;
+  background: rgba(139, 109, 199, 0.15);
+  border: 1px solid rgba(139, 109, 199, 0.3);
+  text-align: center;
+  font-size: 9.5px;
+  font-weight: 800;
+  text-transform: uppercase;
+  color: #c7b6e8;
+  line-height: 1.4;
+}
+
+.frow__centre--score {
+  padding: 1px 10px;
+  font-family: "Oswald", sans-serif;
+  font-size: 15px;
+  font-weight: 700;
+  color: #fff;
+  white-space: nowrap;
+}
+
+.frow__centre--live {
+  background: rgba(139, 109, 199, 0.3);
+  border-color: rgba(139, 109, 199, 0.55);
+}
+
+.frow__dot {
+  flex: none;
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+}
+
+.frow__dot--won {
+  background: #4ade80;
+}
+
+.frow__dot--drawn {
+  background: #8a8496;
+}
+
+.frow__dot--lost {
+  background: #f05252;
+}
+
+.frow__live {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-weight: 800;
+  color: #ff6b6b;
+}
+
+.frow__live-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #ff6b6b;
+  animation: frow-pulse 1.4s ease-in-out infinite;
+}
+
+@keyframes frow-pulse {
+  0%,
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.35;
+    transform: scale(0.75);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .frow__live-dot {
+    animation: none;
+  }
+}

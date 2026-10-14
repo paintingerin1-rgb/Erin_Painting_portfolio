@@ -1,0 +1,28 @@
+# CI for the FantasyFC project folder: the same three gates the team's
+# GitLab pipeline enforced on every merge request - lint, tests, build.
+name: FantasyFC CI
+
+on:
+  push:
+    paths: ["fantasyfc/**", ".github/workflows/fantasyfc-ci.yml"]
+  pull_request:
+    paths: ["fantasyfc/**", ".github/workflows/fantasyfc-ci.yml"]
+
+defaults:
+  run:
+    working-directory: fantasyfc
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: fantasyfc/package-lock.json
+      - run: npm ci
+      - run: npm run lint
+      - run: npm test
+      - run: npm run build

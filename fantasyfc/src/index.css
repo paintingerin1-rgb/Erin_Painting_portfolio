@@ -1,0 +1,37 @@
+/* Global styles. Every page's own CSS is scoped by a page prefix
+   (players-page__, match-center__, standings-page__, scoring-page__) - in a
+   Vite build all CSS ends up in one bundle, so unprefixed class names from
+   two pages silently overwrite each other. */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  margin: 0;
+  min-height: 100%;
+}
+
+body {
+  font-family: "Inter", system-ui, sans-serif;
+  color: #fff;
+  background-color: #0e0d13;
+  /* Floodlit-stadium feel without shipping a multi-megabyte photo. */
+  background-image:
+    radial-gradient(ellipse 80% 50% at 70% -10%, rgba(139, 109, 199, 0.28), transparent 60%),
+    radial-gradient(ellipse 60% 40% at 10% 110%, rgba(109, 79, 168, 0.2), transparent 60%);
+  background-attachment: fixed;
+  -webkit-font-smoothing: antialiased;
+}
+
+button,
+input {
+  font-family: inherit;
+}
+
+a {
+  color: inherit;
+}

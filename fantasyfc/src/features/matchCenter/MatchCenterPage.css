@@ -1,0 +1,128 @@
+.match-center {
+  position: relative;
+  display: flex;
+  height: 100vh;
+  font-family: "Inter", sans-serif;
+}
+
+.match-center__main {
+  flex: 1;
+  padding: 24px 32px 40px;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.match-center__header {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  margin-bottom: 18px;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.match-center__eyebrow {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #cbbcec;
+  margin: 0 0 4px;
+}
+
+.match-center__title {
+  font-family: "Oswald", sans-serif;
+  font-size: 24px;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: #fff;
+  margin: 0;
+}
+
+/* tabs - same visual language as the players/leagues competition tabs */
+.match-tabs {
+  display: flex;
+  gap: 4px;
+  padding: 4px;
+  margin-bottom: 24px;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  width: fit-content;
+}
+
+.match-tab {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 9px 18px;
+  font-family: "Inter", sans-serif;
+  font-size: 12px;
+  font-weight: 700;
+  color: rgba(255, 255, 255, 0.5);
+  background: none;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.match-tab--active {
+  color: #fff;
+  background: linear-gradient(135deg, #6d4fa8, #8b6dc7);
+}
+
+.match-tab__count {
+  font-size: 10px;
+  font-weight: 700;
+  padding: 1px 6px;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.12);
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.match-tab--active .match-tab__count {
+  background: rgba(0, 0, 0, 0.2);
+  color: #fff;
+}
+
+/* fixture panel - .panel/.fixtures-list/.fixture/.fixture__time/
+   .fixture__match/.fixture__vs are the exact classes from
+   DashboardPage.tsx's FIXTURES block, reused verbatim. The additions
+   below (score, live badge) are new, not modifications of those. */
+.panel {
+  background: rgba(32, 30, 38, 0.68);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border-radius: 12px;
+  overflow-y: auto;
+  flex: 1;
+}
+
+.fixtures-list {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding: 16px 20px 20px;
+}
+
+.fixture {
+  position: relative;
+  width: 100%;
+  gap: 16px;
+  padding-bottom: 14px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+}
+
+.fixture:last-child {
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+.match-center__empty {
+  padding: 40px 20px;
+  text-align: center;
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.45);
+}

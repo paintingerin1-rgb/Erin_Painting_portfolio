@@ -1,0 +1,281 @@
+@import url("https://fonts.googleapis.com/css2?family=Oswald:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap");
+
+.players-page {
+  position: relative;
+  display: flex;
+  min-height: 100vh;
+  /*  background: #14121b;*/
+  font-family: "Inter", sans-serif;
+}
+
+.players-page__main {
+  flex: 1;
+  padding: 24px 32px 40px;
+  min-width: 0;
+}
+
+.players-page__header {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  margin-bottom: 14px;
+  gap: 20px;
+}
+
+.players-page__title {
+  font-family: "Oswald", sans-serif;
+  font-size: 24px;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: #fff;
+  margin: 0;
+}
+
+/* Search row, under the header rather than beside the title. */
+.players-page__search-row {
+  margin-bottom: 20px;
+}
+
+.players-page__search {
+  width: 100%;
+  max-width: 360px;
+  padding: 10px 14px;
+  font-family: "Inter", sans-serif;
+  font-size: 13px;
+  color: #fff;
+  background: rgba(0, 0, 0, 0.35);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 9px;
+  outline: none;
+}
+
+.players-page__search::placeholder {
+  color: rgba(255, 255, 255, 0.35);
+}
+
+.players-page__search:focus {
+  border-color: #8b6dc7;
+}
+
+/* competition tabs */
+.competition-tabs {
+  display: flex;
+  gap: 4px;
+  padding: 4px;
+  margin-bottom: 24px;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  width: fit-content;
+  max-width: 100%;
+  flex-wrap: wrap;
+}
+
+.competition-tab {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 9px 18px;
+  font-family: "Inter", sans-serif;
+  font-size: 12px;
+  font-weight: 700;
+  color: rgba(255, 255, 255, 0.35);
+  background: none;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.competition-tab:not(.competition-tab--active):hover {
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.competition-tab--active {
+  color: #fff;
+  background: linear-gradient(135deg, #6d4fa8, #8b6dc7);
+  cursor: default;
+}
+
+/* position groups */
+.position-group {
+  margin-bottom: 28px;
+}
+
+.position-group__title {
+  font-family: "Oswald", sans-serif;
+  font-size: 15px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  color: #fff;
+  margin: 0 0 14px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+/* ===== player tiles =====
+   Named `player-tile` rather than `player-card` on purpose: DraftPage.css
+   owns `.player-card`, where it's a 280px-tall carousel card. Every
+   stylesheet lands in one bundle, so sharing the name meant the draft
+   card's fixed height was stretching these tiles and leaving a dead gap
+   in the middle of each one. */
+.player-tile-grid {
+  display: grid;
+  /* 270px minimum keeps this to roughly five per row on a wide screen -
+     at 210px it fitted seven and everything read as too small. */
+  grid-template-columns: repeat(auto-fill, minmax(270px, 1fr));
+  gap: 14px;
+}
+
+.player-tile {
+  display: flex;
+  flex-direction: column;
+  padding: 18px;
+  border-radius: 12px;
+  background: rgba(32, 30, 38, 0.68);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+.player-tile__top {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 14px;
+  min-width: 0;
+}
+
+.player-tile__avatar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #6d4fa8, #8b6dc7);
+  color: #fff;
+  font-family: "Oswald", sans-serif;
+  font-size: 16px;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+/* min-width: 0 lets this shrink below its content width, which is what
+   allows the ellipsis on the name and club to kick in. Without it a long
+   name wraps to a second line and that tile ends up taller than the rest. */
+.player-tile__meta {
+  min-width: 0;
+  flex: 1;
+}
+
+.player-tile__name {
+  font-size: 15px;
+  font-weight: 700;
+  color: #fff;
+  margin: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.player-tile__club {
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.45);
+  margin: 3px 0 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.player-tile__stats {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+  margin-top: auto;
+}
+
+.player-tile__stat {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 10px 6px;
+  border-radius: 8px;
+  background: rgba(0, 0, 0, 0.25);
+  min-width: 0;
+}
+
+.player-tile__stat--pts {
+  background: rgba(139, 109, 199, 0.18);
+  border: 1px solid rgba(139, 109, 199, 0.35);
+}
+
+.player-tile__stat-label {
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.4);
+  margin-bottom: 3px;
+}
+
+.player-tile__stat-value {
+  font-family: "Oswald", sans-serif;
+  font-size: 15px;
+  font-weight: 700;
+  color: #fff;
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.player-tile__stat--pts .player-tile__stat-value {
+  color: #c7b6e8;
+}
+
+/* pagination */
+.players-page__pagination {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  margin-top: 24px;
+  font-family: "Inter", sans-serif;
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.players-page__pagination-btn {
+  padding: 9px 18px;
+  font-family: "Inter", sans-serif;
+  font-size: 12px;
+  font-weight: 700;
+  color: #fff;
+  background: linear-gradient(135deg, #6d4fa8, #8b6dc7);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.players-page__pagination-btn:disabled {
+  color: rgba(255, 255, 255, 0.25);
+  background: rgba(255, 255, 255, 0.05);
+  cursor: not-allowed;
+}
+
+/* Status and error lines (unstyled in the original app). */
+.players-page__status,
+.players-page__error {
+  margin: 24px 0;
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.players-page__error {
+  padding: 11px 14px;
+  border-radius: 8px;
+  background: rgba(248, 113, 113, 0.1);
+  border: 1px solid rgba(248, 113, 113, 0.3);
+  color: #f87171;
+}
