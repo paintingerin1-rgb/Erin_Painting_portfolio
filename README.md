@@ -25,3 +25,15 @@ Four projects from my CS313 networking module at Stellenbosch, each done in a gr
 - **[PeerShare](networking-projects/cs313-p4-peershare/):** peer-to-peer file sharing where the server only introduces peers and never sees the files. Transfers are encrypted with AES, and RSA protects the keys.
 
 [All four projects](networking-projects/)
+
+---
+
+### ♟️ Parallel Othello engine: MPI in C
+
+**C · MPI · minimax with alpha-beta pruning · Python · Docker**
+
+An Othello player that thinks in parallel, built for my RW314 (Parallel Computing) course at Stellenbosch. One master process talks to the referee and splits the legal moves between worker processes, which search the game tree at the same time and report back their best move. Each worker runs minimax with alpha-beta pruning, scoring positions on corners and edges, mobility, piece stability and endgame parity.
+
+It plays inside the course's tournament framework. The README covers what I'd change next: dynamic work sharing, so workers can't run out of time at greater depths.
+
+[Code and write-up](parallel-computing/rw314-p2-parallel-othello/)
