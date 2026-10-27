@@ -1,3 +1,15 @@
+### 🎨 Pix-Art: collaborative pixel art canvas
+
+**Angular 19 · TypeScript · Supabase (Auth + Postgres)**
+
+A pixel art canvas app, and my first project in Angular, TypeScript and Supabase. I built it during my software development internship at **OneEleven**, as a two-week intro project where my supervisor set the stack and I had to make every decision inside it. It has sign-up and login through Supabase Auth, routes that only signed-in users can open, and a Postgres schema for canvases and the pixels on them, tied to each user's account.
+
+I'd never used any of those tools before, so I treated it as a chance to learn them properly. I wanted to understand each piece I built, not just ship something that ran.
+
+[Code](https://github.com/paintingerin1-rgb/PixelArt.git)
+
+---
+
 ### ⚽ FantasyFC: fantasy football web app for Entelect
 
 **React · TypeScript · Three.js · Supabase (Postgres) · Vitest · CI/CD**
