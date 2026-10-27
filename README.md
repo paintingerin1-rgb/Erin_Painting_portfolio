@@ -6,6 +6,7 @@ A full-stack fantasy football app built by a team of five for **Entelect** over 
 
 **My role: front-end and UI/UX lead.** I designed the interface (13 wireframes and the team's style guide), set up the React app, and built the first version of almost every screen. I connected the Players and Match Center pages to real data, wrote the TypeScript scoring engine (43 tests) and the demo-league seed script, and led the final UI polish. We demoed the product live at Entelect's Cape Town office, and the client was very happy with the result.
 
+Please note that if the live app is currently not running, it may be because my team member has temporarily paused Supabase to reduce costs.
 [Case study and code](fantasyfc/) · [Live app](https://cuneiform-project.vercel.app)
 
 ---
